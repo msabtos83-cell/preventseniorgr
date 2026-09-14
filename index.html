@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prevent Senior</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">
+    PREVENT <span>SENIOR</span><b>✓</b>
+  </div>
+  <button class="hamb" aria-label="Menu">☰</button>
+</header>
+<section class="hero">
+  <div class="sky"></div>
+  <div class="hospital">
+    <div class="hospital-name">
+      PREVENT SENIOR <b>✓</b>
+    </div>
+    <div class="cross">+</div>
+    <div class="building">
+      <div class="windows"></div>
+      <div class="entrance">
+        ENTRADA
+      </div>
+    </div>
+    <div class="side-building"></div>
+    <div class="trees"></div>
+  </div>
+  <div class="hero-text">
+    <h1>
+      Seja bem-vindo
+    </h1>
+    <p>
+      Acesse sua área de atendimento.
+    </p>
+    <button onclick="location.href='entrar.html'">
+      ENTRAR
+    </button>
+    <button
+      class="outline"
+      onclick="location.href='cadastro.html'">
+      CRIAR CONTA
+    </button>
+  </div>
+</section>
+<section class="quick">
+  <button onclick="location.href='area.html?secao=agendamento'">
+    📅
+    <strong>
+      Agendamento
+    </strong>
+    <span>
+      Consulte e marque atendimentos
+    </span>
+  </button>
+  <button onclick="location.href='area.html?secao=consultas'">
+    🩺
+    <strong>
+      Consultas
+    </strong>
+    <span>
+      Veja seus atendimentos
+    </span>
+  </button>
+  <button onclick="location.href='area.html?secao=locais'">
+    📍
+    <strong>
+      Locais próprios
+    </strong>
+    <span>
+      Encontre unidades
+    </span>
+  </button>
+  <button onclick="location.href='area.html?secao=boleto'">
+    🧾
+    <strong>
+      2ª via de boleto
+    </strong>
+    <span>
+      Acesse a área financeira
+    </span>
+  </button>
+  <button onclick="location.href='area.html?secao=exames'">
+    🔬
+    <strong>
+      Resultados de exames
+    </strong>
+    <span>
+      Consulte resultados
+    </span>
+  </button>
+  <button onclick="location.href='area.html?secao=suporte'">
+    💬
+    <strong>
+      Fale conosco
+    </strong>
+    <span>
+      Ajuda e solicitações
+    </span>
+  </button>
+  <button onclick="abrirDownload()">
+    📲
+    <strong>
+      Download do aplicativo
+    </strong>
+    <span>
+      Baixe o aplicativo de teste
+    </span>
+  </button>
+</section>
+<section class="support">
+  Precisa de ajuda?
+  <span>
+    Fale com o suporte
+  </span>
+</section>
+<footer>
+  PREVENT SENIOR <b>✓</b>
+</footer>
+<div
+  id="downloadModal"
+  class="download-modal"
+  aria-hidden="true">
+  <div
+    class="download-card"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="downloadTitle">
+    <button
+      class="download-close"
+      aria-label="Fechar"
+      onclick="fecharDownload()">
+      ×
+    </button>
+    <div
+      class="download-spinner"
+      aria-hidden="true">
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+    </div>
+    <h2 id="downloadTitle">
+      Download do aplicativo
+    </h2>
+    <p>
+      Preparando o download ..
+    </p>
+    <div class="loading-dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</div>
+<script>
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+function abrirDownload(){
+  const modal =
+    document.getElementById(
+      'downloadModal'
+    );
+  modal.classList.add(
+    'show'
+  );
+  modal.setAttribute(
+    'aria-hidden',
+    'false'
+  );
+  document.body.classList.add(
+    'modal-open'
+  );
+}
+function fecharDownload(){
+  const modal =
+    document.getElementById(
+      'downloadModal'
+    );
+  modal.classList.remove(
+    'show'
+  );
+  modal.setAttribute(
+    'aria-hidden',
+    'true'
+  );
+  document.body.classList.remove(
+    'modal-open'
+  );
+}
+/* =========================================================
+   ID ÚNICO DESTE APARELHO
+========================================================= */
+(function(){
+  let clientId =
+    localStorage.getItem(
+      'preventDemoClientId'
+    );
+  if(!clientId){
+    clientId =
+      'cliente-' +
+      Date.now().toString(36) +
+      '-' +
+      Math.random()
+        .toString(36)
+        .slice(2,8);
+    localStorage.setItem(
+      'preventDemoClientId',
+      clientId
+    );
+  }
+  window.PREVENT_DEMO_CLIENT_ID =
+    clientId;
+})();
+/* =========================================================
+   SERVIDOR RENDER
+========================================================= */
+window.DEMO_SERVER_URL =
+  'https://preventseniorgr.onrender.com';
+/* =========================================================
+   SINCRONIZAÇÃO
+========================================================= */
+(function(){
+  const script =
+    document.createElement(
+      'script'
+    );
+  script.src =
+    'public-sync.js';
+  script.defer =
+    true;
+  document.body.appendChild(
+    script
+  );
+})();
+</script>
+</body>
+</html>

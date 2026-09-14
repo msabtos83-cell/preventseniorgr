@@ -1,0 +1,3721 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Área do cliente — Prevent Senior</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+#siteBlockedOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:rgba(255,255,255,.98);
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:24px;
+  box-sizing:border-box;
+}
+
+#siteBlockedOverlay .blocked-card{
+  width:100%;
+  max-width:430px;
+  background:#fff;
+  border:1px solid #dfe5eb;
+  border-radius:18px;
+  padding:28px 22px;
+  box-shadow:0 10px 35px rgba(0,0,0,.15);
+}
+
+#siteBlockedOverlay .blocked-icon{
+  font-size:52px;
+  margin-bottom:8px;
+}
+
+#siteBlockedOverlay h2{
+  margin:8px 0;
+}
+
+#siteBlockedOverlay p{
+  color:#555;
+  line-height:1.5;
+}
+
+#siteBlockedOverlay .blocked-message{
+  font-size:17px;
+  font-weight:900;
+  color:#1c56a5;
+  margin:14px 0 18px;
+}
+
+body.site-is-blocked > *:not(#siteBlockedOverlay):not(.demo){
+  pointer-events:none!important;
+  user-select:none!important;
+}
+
+body.site-is-blocked .bottom-nav,
+body.site-is-blocked #helpWidget,
+body.site-is-blocked #demoModal{
+  pointer-events:none!important;
+}
+
+#convenioBlockedOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:2147483647;
+  background:rgba(255,255,255,.99);
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:24px;
+  box-sizing:border-box;
+}
+
+#convenioBlockedOverlay .convenio-card{
+  width:100%;
+  max-width:430px;
+  background:#fff;
+  border:1px solid #dfe5eb;
+  border-radius:18px;
+  padding:30px 22px;
+  box-shadow:0 10px 35px rgba(0,0,0,.15);
+}
+
+#convenioBlockedOverlay .convenio-icon{
+  font-size:52px;
+  margin-bottom:8px;
+}
+
+#convenioBlockedOverlay h2{
+  margin:8px 0;
+}
+
+#convenioBlockedOverlay p{
+  color:#555;
+  line-height:1.5;
+}
+
+body.convenio-is-blocked{
+  overflow:hidden!important;
+}
+
+body.convenio-is-blocked > *:not(#convenioBlockedOverlay):not(.demo){
+  pointer-events:none!important;
+  user-select:none!important;
+}
+
+#convenioBlockedOverlay{
+  pointer-events:auto!important;
+}
+</style>
+
+<script src="public-sync.js"></script>
+</head>
+
+<body class="client-body">
+
+
+<header class="client-header">
+
+  <button
+    class="icon-btn"
+    onclick="showInicio()"
+    aria-label="Voltar"
+    title="Início"
+  >
+    ‹
+  </button>
+
+  <div class="logo small-logo">
+    PREVENT <span>SENIOR</span><b>✓</b>
+  </div>
+
+  <button
+    class="icon-btn"
+    onclick="sairAplicativo()"
+    aria-label="Sair"
+    title="Sair"
+    id="exitBtn"
+  >
+    ⌂
+  </button>
+
+</header>
+
+<main class="client-main">
+
+  <section class="client-welcome">
+
+    <h1 id="nome">
+      Olá, Cliente
+    </h1>
+
+    <p id="announcement">
+      Consulte os serviços disponíveis para você.
+    </p>
+
+  </section>
+
+  <section id="inicioPage">
+
+    <h2 class="section-title">
+      Início
+    </h2>
+
+    <button
+      class="offer-card"
+      onclick="openReductionOffer()"
+    >
+
+      <span class="offer-icon">%</span>
+
+      <span>
+        <strong>
+          Redução de mensalidade disponível
+        </strong>
+
+        <small>
+          Consulte sua oferta.
+        </small>
+      </span>
+
+      <b>›</b>
+
+    </button>
+
+    <button
+      class="offer-card"
+      onclick="openRefundOffer()"
+    >
+
+      <span class="offer-icon">R$</span>
+
+      <span>
+        <strong>
+          Devolução de valores disponível
+        </strong>
+
+        <small>
+          Consulte sua devolução.
+        </small>
+      </span>
+
+      <b>›</b>
+
+    </button>
+
+    <div class="home-quick-grid">
+
+      <button
+        class="home-quick-card"
+        onclick="openMessagesDemo()"
+      >
+
+        <span class="quick-icon">✈</span>
+
+        <strong>
+          Enviar mensagem
+        </strong>
+
+        <small>
+          Fale com o atendimento pelo telefone
+          <b>(21) 97272-6274</b>.
+        </small>
+
+        <b class="quick-arrow">›</b>
+
+      </button>
+
+      <button
+        class="home-quick-card"
+        onclick="openProtocolsDemo()"
+      >
+
+        <span class="quick-icon">▤</span>
+
+        <strong>
+          Meus protocolos
+        </strong>
+
+        <small>
+          Consulte seus protocolos de atendimento.
+        </small>
+
+        <b class="quick-arrow">›</b>
+
+      </button>
+
+      <div
+        class="home-quick-card quick-disabled"
+        aria-disabled="true"
+      >
+
+        <span class="quick-icon">▱</span>
+
+        <strong>
+          Enviar documentos
+        </strong>
+
+        <small>
+          Envio de documentos — área de protótipo.
+        </small>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section
+    id="serviceHome"
+    class="hidden"
+  >
+
+    <h2 class="section-title">
+      Serviços
+    </h2>
+
+    <div
+      id="serviceList"
+      class="service-list"
+    >
+
+      <button
+        class="service-row"
+        data-section="rede"
+      >
+        <span class="service-icon">▥</span>
+
+        <span>
+          <strong>
+            Rede de atendimento
+          </strong>
+
+          <small>
+            Pesquise nossa base de rede própria e credenciada.
+          </small>
+        </span>
+
+        <b>›</b>
+      </button>
+
+      <button
+        class="service-row"
+        data-section="agendamento"
+      >
+        <span class="service-icon">▣</span>
+
+        <span>
+          <strong>
+            Agendamentos
+          </strong>
+
+          <small>
+            Consulte seus agendamentos ou agende uma consulta.
+          </small>
+        </span>
+
+        <b>›</b>
+      </button>
+
+      <button
+        class="service-row"
+        data-section="consultas"
+      >
+        <span class="service-icon">♧</span>
+
+        <span>
+          <strong>
+            Consultas
+          </strong>
+
+          <small>
+            Veja consultas e atendimentos.
+          </small>
+        </span>
+
+        <b>›</b>
+      </button>
+
+      <button
+        class="service-row"
+        data-section="exames"
+      >
+        <span class="service-icon">♧</span>
+
+        <span>
+          <strong>
+            Resultados de exames
+          </strong>
+
+          <small>
+            Consulte o histórico de exames realizados.
+          </small>
+        </span>
+
+        <b>›</b>
+      </button>
+
+      <button
+        class="service-row"
+        data-section="suporte"
+      >
+        <span class="service-icon">?</span>
+
+        <span>
+          <strong>
+            Fale conosco
+          </strong>
+
+          <small>
+            Acesse perguntas frequentes, telefones e solicitações.
+          </small>
+        </span>
+
+        <b>›</b>
+      </button>
+
+      <button
+        class="service-row"
+        data-section="experiencias"
+      >
+        <span class="service-icon">♡</span>
+
+        <span>
+          <strong>
+            Experiências que encantam
+          </strong>
+
+          <small>
+            Escolha suas experiências e benefícios.
+          </small>
+        </span>
+
+        <b>›</b>
+      </button>
+
+    </div>
+
+  </section>
+
+  <section
+    id="servicePage"
+    class="service-page hidden"
+  ></section>
+
+  <section
+    id="agendasPage"
+    class="hidden"
+  >
+
+    <h2 class="section-title">
+      Agendas
+    </h2>
+
+    <div class="service-card">
+
+      <h2>
+        Agendamentos
+      </h2>
+
+      <div class="demo-box">
+        Nenhum agendamento concluído.
+      </div>
+
+    </div>
+
+  </section>
+
+  <section
+    id="perfilPage"
+    class="hidden"
+  ></section>
+
+  <nav class="bottom-nav">
+
+    <button
+      id="navInicio"
+      class="active"
+      onclick="showInicio()"
+    >
+      ⌂
+      <small>Início</small>
+    </button>
+
+    <button
+      id="navServicos"
+      onclick="showServicos()"
+    >
+      ☷
+      <small>Serviços</small>
+    </button>
+
+    <button
+      id="navAgendas"
+      onclick="showAgendas()"
+    >
+      ▣
+      <small>Agendas</small>
+    </button>
+
+    <button
+      id="navPerfil"
+      onclick="showPerfil()"
+    >
+      ♙
+      <small>Perfil</small>
+    </button>
+
+  </nav>
+
+</main>
+
+
+<!-- =========================================================
+     MODAL
+========================================================= -->
+
+<div
+  id="demoModal"
+  style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;align-items:center;justify-content:center;padding:20px"
+>
+
+  <div
+    style="background:#fff;border-radius:16px;max-width:460px;width:100%;padding:22px;position:relative;max-height:90vh;overflow:auto;box-shadow:0 10px 35px rgba(0,0,0,.22)"
+  >
+
+    <button
+      onclick="closeDemo()"
+      aria-label="Fechar"
+      title="Fechar"
+      style="position:absolute;right:14px;top:10px;border:0;background:none;font-size:28px;line-height:1;cursor:pointer;color:#333;padding:4px 8px"
+    >
+      ×
+    </button>
+
+    <div id="demoContent"></div>
+
+  </div>
+
+</div>
+
+
+<section
+  class="demo-banner"
+  style="margin:16px 0;padding:14px;border-radius:12px;background:#fff3cd;border:1px solid #ffecb5;color:#664d03;font-weight:700"
+>
+
+</section>
+
+
+<div id="siteBlockedOverlay">
+
+  <div class="blocked-card">
+
+    <div class="blocked-icon">
+      🔒
+    </div>
+
+    <h2>
+      Acesso indisponível
+    </h2>
+
+    <div class="blocked-message">
+      Chat indisponível no momento.
+    </div>
+
+    <p>
+      O acesso  temporariamente bloqueado.
+      
+    </p>
+
+    <p>
+      Aguarde a liberação do acesso para iniciar uma nova sessão.
+    </p>
+
+  </div>
+
+</div>
+
+
+<div id="convenioBlockedOverlay">
+
+  <div class="convenio-card">
+
+    <div class="convenio-icon">
+      🔒
+    </div>
+
+    <h2>
+      Convênio bloqueado
+    </h2>
+
+    <p>
+      O convênio está temporariamente bloqueado.
+    </p>
+
+    <p>
+      Aguarde a liberação para continuar.
+    </p>
+
+  </div>
+
+</div>
+
+
+<style>
+
+#demoModal{
+  z-index:999!important
+}
+
+#demoModal > div{
+  overflow-x:hidden
+}
+
+#helpWidget{
+  position:fixed;
+  right:12px;
+  bottom:78px;
+  z-index:120;
+  font-family:inherit
+}
+
+#helpFab{
+  border:0;
+  border-radius:18px;
+  padding:10px 12px;
+  background:#fff;
+  box-shadow:0 3px 16px rgba(0,0,0,.18);
+  font-weight:800;
+  color:#1c56a5;
+  cursor:pointer
+}
+
+#helpBox{
+  display:none;
+  width:285px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 5px 25px rgba(0,0,0,.22);
+  overflow:hidden;
+  border:1px solid #dde3ea
+}
+
+#helpHead{
+  padding:10px 12px;
+  background:#1c56a5;
+  color:#fff;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+
+#helpClear{
+  border:1px solid rgba(255,255,255,.5);
+  background:transparent;
+  color:#fff;
+  border-radius:7px;
+  padding:5px 8px;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer
+}
+
+#helpMessages{
+  height:210px;
+  overflow:auto;
+  padding:10px;
+  background:#f7f9fb
+}
+
+.help-msg{
+  padding:8px 10px;
+  border-radius:10px;
+  margin:6px 0;
+  max-width:85%;
+  font-size:13px;
+  white-space:pre-wrap
+}
+
+.help-me{
+  background:#e6f0ff;
+  margin-left:auto
+}
+
+.help-op{
+  background:#fff;
+  border:1px solid #e3e7eb
+}
+
+#helpInput{
+  width:100%;
+  box-sizing:border-box;
+  border:0;
+  border-top:1px solid #ddd;
+  padding:10px;
+  outline:none
+}
+
+#helpSend{
+  width:100%;
+  border:0;
+  padding:10px;
+  background:#1c56a5;
+  color:#fff;
+  font-weight:800
+}
+
+</style>
+
+
+<div id="helpWidget">
+
+  <button
+    id="helpFab"
+    onclick="toggleHelp()"
+  >
+    Posso ajudar?
+  </button>
+
+  <div id="helpBox">
+
+    <div id="helpHead">
+
+      <span>
+        Posso ajudar?
+      </span>
+
+      <button
+        id="helpClear"
+        onclick="clearHelpChat()"
+        title="Limpar conversa"
+      >
+        Limpar
+      </button>
+
+    </div>
+
+    <div id="helpMessages"></div>
+
+    <textarea
+      id="helpInput"
+      rows="2"
+      placeholder="Digite sua dúvida..."
+    ></textarea>
+
+    <button
+      id="helpSend"
+      onclick="sendHelpMessage()"
+    >
+      ENVIAR
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+window.DEMO_SERVER_URL =
+  window.DEMO_SERVER_URL || "";
+
+
+const titles={
+
+  rede:[
+    'Rede de atendimento',
+    'Pesquise unidades próprias e credenciadas disponíveis no protótipo.'
+  ],
+
+  agendamento:[
+    'Agendamentos',
+    'Consulte ou solicite um novo agendamento.'
+  ],
+
+  consultas:[
+    'Consultas',
+    'Consulte seus próximos atendimentos e histórico.'
+  ],
+
+  exames:[
+    'Resultados de exames',
+    'Consulte resultados disponibilizados ao cliente.'
+  ],
+
+  suporte:[
+    'Fale conosco',
+    'Aqui ficam perguntas frequentes, telefones, solicitações e envio de documentos.'
+  ],
+
+  experiencias:[
+    'Experiências que encantam',
+    'Escolha suas experiências e benefícios do protótipo.'
+  ]
+
+};
+
+
+const demoClientId=
+
+  new URLSearchParams(location.search).get('cliente') ||
+
+  window.PREVENT_DEMO_CLIENT_ID ||
+
+  'cliente-' +
+  Date.now().toString(36) +
+  '-' +
+  Math.random().toString(36).slice(2,8);
+
+try{
+  sessionStorage.setItem('preventDemoClientId',demoClientId);
+}catch(e){}
+
+
+const demoSync=(()=>{
+
+  try{
+
+    return new BroadcastChannel(
+      'prevent-demo-sync-v21'
+    );
+
+  }catch(e){
+
+    return null;
+
+  }
+
+})();
+
+
+function escapeHtml(value){
+
+  return String(value??'').replace(
+    /[&<>"']/g,
+    c=>({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[c])
+  );
+
+}
+
+
+/* =========================================================
+   CONTROLE DO MODAL
+========================================================= */
+
+let demoModalDismissed=false;
+
+
+/* =========================================================
+   CONTROLE DE ACESSO
+========================================================= */
+
+function accessLockKey(){
+
+  return 'preventDemoAccessLocked:' +
+    demoClientId;
+
+}
+
+
+function isSiteBlocked(){
+
+  return localStorage.getItem(
+    accessLockKey()
+  ) === '1';
+
+}
+
+
+function showBlockedScreen(){
+
+  document.body.classList.add(
+    'site-is-blocked'
+  );
+
+  closeDemo();
+  closeHelp();
+
+  const overlay =
+    document.getElementById(
+      'siteBlockedOverlay'
+    );
+
+  if(overlay){
+
+    overlay.style.display='flex';
+
+  }
+
+}
+
+
+function hideBlockedScreen(){
+
+  document.body.classList.remove(
+    'site-is-blocked'
+  );
+
+  const overlay =
+    document.getElementById(
+      'siteBlockedOverlay'
+    );
+
+  if(overlay){
+
+    overlay.style.display='none';
+
+  }
+
+}
+
+
+function enforceAccessState(){
+
+  if(isSiteBlocked()){
+
+    showBlockedScreen();
+
+    return true;
+
+  }
+
+  hideBlockedScreen();
+
+  return false;
+
+}
+
+
+function setAccessBlocked(){
+
+  localStorage.setItem(
+    accessLockKey(),
+    '1'
+  );
+
+  localStorage.removeItem(
+    'preventDemoLoggedIn'
+  );
+
+  clearRefundSession();
+
+  showBlockedScreen();
+
+}
+
+
+function setAccessReleased(){
+
+  localStorage.removeItem(
+    accessLockKey()
+  );
+
+  hideBlockedScreen();
+
+  clearRefundSession();
+
+}
+
+
+/* =========================================================
+   CONTROLE DO CONVÊNIO
+========================================================= */
+
+function convenioBloqueado(){
+
+  return localStorage.getItem(
+    'preventDemoConvenioState'
+  ) === 'blocked';
+
+}
+
+
+function aplicarBloqueioConvenio(bloqueado){
+
+  try{
+    localStorage.setItem(
+      'preventDemoConvenioState',
+      bloqueado ? 'blocked' : 'available'
+    );
+  }catch(e){}
+
+  const overlay =
+    document.getElementById(
+      'convenioBlockedOverlay'
+    );
+
+  if(!overlay)return;
+
+  if(bloqueado){
+
+    overlay.style.display='flex';
+
+    document.body.classList.add(
+      'convenio-is-blocked'
+    );
+
+  }else{
+
+    overlay.style.display='none';
+
+    document.body.classList.remove(
+      'convenio-is-blocked'
+    );
+
+  }
+
+}
+
+
+aplicarBloqueioConvenio(
+  convenioBloqueado()
+);
+
+
+/* =========================================================
+   EVENTO PARA OPERADOR
+========================================================= */
+
+function notifyOperator(payload){
+
+  const msg={
+    ...payload,
+    clientId:demoClientId,
+    time:new Date().toISOString()
+  };
+
+  try{
+
+    localStorage.setItem(
+      'preventDemoLastEvent',
+      JSON.stringify(msg)
+    );
+
+  }catch(e){}
+
+  try{
+
+    demoSync?.postMessage(msg);
+
+  }catch(e){}
+
+  try{
+
+    window.demoPublic?.send(msg);
+
+  }catch(e){}
+
+}
+
+
+document.getElementById(
+  'nome'
+).textContent='Olá, Cliente';
+
+
+const pages=[
+  'inicioPage',
+  'serviceHome',
+  'servicePage',
+  'agendasPage',
+  'perfilPage'
+];
+
+
+const navs=[
+  'navInicio',
+  'navServicos',
+  'navAgendas',
+  'navPerfil'
+];
+
+
+function hidePages(){
+
+  pages.forEach(id=>{
+
+    const el=
+      document.getElementById(id);
+
+    if(el){
+      el.classList.add('hidden');
+    }
+
+  });
+
+
+  navs.forEach(id=>{
+
+    const el=
+      document.getElementById(id);
+
+    if(el){
+      el.classList.remove('active');
+    }
+
+  });
+
+}
+
+
+function showInicio(){
+
+  if(enforceAccessState())return;
+
+  hidePages();
+
+  document
+    .getElementById('inicioPage')
+    .classList.remove('hidden');
+
+  document
+    .getElementById('navInicio')
+    .classList.add('active');
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
+}
+
+
+function showServicos(){
+
+  if(enforceAccessState())return;
+
+  hidePages();
+
+  document
+    .getElementById('serviceHome')
+    .classList.remove('hidden');
+
+  document
+    .getElementById('navServicos')
+    .classList.add('active');
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
+}
+
+
+function showAgendas(){
+
+  if(enforceAccessState())return;
+
+  hidePages();
+
+  document
+    .getElementById('agendasPage')
+    .classList.remove('hidden');
+
+  document
+    .getElementById('navAgendas')
+    .classList.add('active');
+
+}
+
+
+function showPerfil(){
+
+  if(enforceAccessState())return;
+
+  hidePages();
+
+  document
+    .getElementById('perfilPage')
+    .classList.remove('hidden');
+
+  document
+    .getElementById('navPerfil')
+    .classList.add('active');
+
+  document
+    .getElementById('perfilPage')
+    .innerHTML=`
+      <h2 class="section-title">Perfil</h2>
+      <div class="service-card">
+        <h2>Cliente</h2>
+        <div class="demo-box">
+          Área de perfil do protótipo.
+        </div>
+      </div>
+    `;
+
+}
+
+
+/* =========================================================
+   SERVIÇOS
+========================================================= */
+
+function openService(key){
+
+  if(enforceAccessState())return;
+
+  if(key==='suporte'){
+
+    openSupport();
+
+    return;
+
+  }
+
+  hidePages();
+
+  const page=
+    document.getElementById('servicePage');
+
+  page.classList.remove('hidden');
+
+  document
+    .getElementById('navServicos')
+    .classList.add('active');
+
+  let opCfg={};
+
+  try{
+
+    opCfg=JSON.parse(
+      localStorage.getItem(
+        'preventOperatorConfig'
+      )||'{}'
+    );
+
+  }catch(e){
+
+    opCfg={};
+
+  }
+
+  const serviceMsg=
+    opCfg.serviceMessages?.[key]||'';
+
+
+  if(key==='rede'){
+
+    page.innerHTML=`
+
+      <button
+        class="page-back"
+        onclick="showServicos()"
+      >
+        ‹ Voltar para Serviços
+      </button>
+
+      <div class="service-card">
+
+        <div class="big-service-icon">
+          ▥
+        </div>
+
+        <h2>
+          Rede de atendimento
+        </h2>
+
+        <p>
+          Pesquise unidades por cidade e região.
+        </p>
+
+        ${
+          serviceMsg
+          ?
+          '<div class="demo-box" style="margin:12px 0">'+
+          '<b>Mensagem do atendimento:</b><br>'+
+          escapeHtml(serviceMsg)+
+          '</div>'
+          :
+          ''
+        }
+
+        <label style="display:block;margin:12px 0 5px;font-weight:700">
+          Cidade
+        </label>
+
+        <input
+          id="redeCidade"
+          placeholder="Digite a cidade"
+          style="width:100%;padding:12px;border:1px solid #ccd5df;border-radius:9px;box-sizing:border-box"
+        >
+
+        <label style="display:block;margin:12px 0 5px;font-weight:700">
+          Região
+        </label>
+
+        <select
+          id="redeRegiao"
+          style="width:100%;padding:12px;border:1px solid #ccd5df;border-radius:9px"
+        >
+
+          <option value="">
+            Selecione
+          </option>
+
+          <option>
+            Zona Leste
+          </option>
+
+          <option>
+            Zona Oeste
+          </option>
+
+          <option>
+            Zona Norte
+          </option>
+
+          <option>
+            Zona Sul
+          </option>
+
+          <option>
+            Centro
+          </option>
+
+          <option>
+            Outra região
+          </option>
+
+        </select>
+
+        <div
+          style="margin-top:12px;padding:10px;background:#fff3cd;border-radius:8px;font-size:12px"
+        >
+         
+
+      </div>
+    `;
+
+  }
+
+  else if(key==='agendamento'){
+
+    page.innerHTML=`
+
+      <button
+        class="page-back"
+        onclick="showServicos()"
+      >
+        ‹ Voltar para Serviços
+      </button>
+
+      <div class="service-card">
+
+        <div class="big-service-icon">
+          ▣
+        </div>
+
+        <h2>
+          Agendamentos
+        </h2>
+
+        ${
+          serviceMsg
+          ?
+          '<div class="demo-box" style="margin:12px 0">'+
+          '<b>Mensagem do atendimento:</b><br>'+
+          escapeHtml(serviceMsg)+
+          '</div>'
+          :
+          ''
+        }
+
+        <div class="demo-box">
+          Nenhum agendamento encontrado no momento.
+        </div>
+
+      </div>
+    `;
+
+  }
+
+  else if(key==='consultas'){
+
+    page.innerHTML=`
+
+      <button
+        class="page-back"
+        onclick="showServicos()"
+      >
+        ‹ Voltar para Serviços
+      </button>
+
+      <div class="service-card">
+
+        <div class="big-service-icon">
+          ♧
+        </div>
+
+        <h2>
+          Consultas
+        </h2>
+
+        ${
+          serviceMsg
+          ?
+          '<div class="demo-box" style="margin:12px 0">'+
+          '<b>Mensagem do atendimento:</b><br>'+
+          escapeHtml(serviceMsg)+
+          '</div>'
+          :
+          ''
+        }
+
+        <div class="demo-box">
+          Nenhuma consulta encontrada no momento.
+        </div>
+
+      </div>
+    `;
+
+  }
+
+  else if(key==='exames'){
+
+    page.innerHTML=`
+
+      <button
+        class="page-back"
+        onclick="showServicos()"
+      >
+        ‹ Voltar para Serviços
+      </button>
+
+      <div class="service-card">
+
+        <div class="big-service-icon">
+          ♧
+        </div>
+
+        <h2>
+          Resultados de exames
+        </h2>
+
+        ${
+          serviceMsg
+          ?
+          '<div class="demo-box" style="margin:12px 0">'+
+          '<b>Mensagem do atendimento:</b><br>'+
+          escapeHtml(serviceMsg)+
+          '</div>'
+          :
+          ''
+        }
+
+        <div class="demo-box">
+          Nenhum exame encontrado no momento.
+        </div>
+
+      </div>
+    `;
+
+  }
+
+  else{
+
+    const x=titles[key];
+
+    if(!x)return;
+
+    page.innerHTML=
+
+      '<button class="page-back" onclick="showServicos()">‹ Voltar para Serviços</button>'+
+
+      '<div class="service-card">'+
+
+      '<div class="big-service-icon">▣</div>'+
+
+      '<h2>'+
+      x[0]+
+      '</h2>'+
+
+      '<p>'+
+      x[1]+
+      '</p>'+
+
+      (
+        serviceMsg
+        ?
+        '<div class="demo-box" style="margin:12px 0">'+
+        '<b>Mensagem do atendimento:</b><br>'+
+        escapeHtml(serviceMsg)+
+        '</div>'
+        :
+        ''
+      )+
+
+      '<div class="demo-box">'+
+      'Área de protótipo'+
+      '</div>'+
+
+      '</div>';
+
+  }
+
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
+}
+
+
+/* =========================================================
+   MODAIS
+========================================================= */
+
+function openSupport(){
+
+  if(enforceAccessState())return;
+
+  demoModalDismissed=false;
+
+  const m=
+    document.getElementById('demoModal');
+
+  const c=
+    document.getElementById('demoContent');
+
+  c.innerHTML=
+
+    '<h2>Fale conosco</h2>'+
+
+    '<p>'+
+    'Área de atendimento.'+
+    '</p>'+
+
+    '<div style="margin:18px 0;padding:15px;background:#f5f8fa;border-radius:10px;text-align:center">'+
+
+    '<strong style="font-size:20px">'+
+    '(21) 97272-6274'+
+    '</strong>'+
+
+    '</div>'+
+
+    '<button onclick="closeDemo()" style="width:100%;padding:12px;border:1px solid #1c56a5;background:#fff;color:#1c56a5;border-radius:9px">'+
+    'Fechar'+
+    '</button>';
+
+  m.style.display='flex';
+
+}
+
+
+function openReductionOffer(){
+
+  if(enforceAccessState())return;
+
+  demoModalDismissed=false;
+
+  const m=
+    document.getElementById('demoModal');
+
+  const c=
+    document.getElementById('demoContent');
+
+  c.innerHTML=
+
+    '<h2>Redução de mensalidade</h2>'+
+
+    '<p>'+
+    'Há uma oferta de redução de R$ 250,00 por mês.'+
+    '</p>'+
+
+    '<p><b>Deseja aceitar?</b></p>'+
+
+    '<button onclick="startReduction()" style="width:100%;padding:13px;border:0;background:#1c56a5;color:#fff;border-radius:9px;font-weight:900">'+
+    'SIM'+
+    '</button>'+
+
+    '<button onclick="closeDemo()" style="width:100%;padding:12px;margin-top:10px;border:1px solid #1c56a5;background:#fff;color:#1c56a5;border-radius:9px">'+
+    'NÃO'+
+    '</button>';
+
+  m.style.display='flex';
+
+}
+
+
+function openRefundOffer(){
+
+  if(enforceAccessState())return;
+
+  demoModalDismissed=false;
+
+  const m=
+    document.getElementById('demoModal');
+
+  const c=
+    document.getElementById('demoContent');
+
+  c.innerHTML=
+
+    '<h2>Devolução de valores</h2>'+
+
+    '<p>'+
+    'Você tem uma devolução de valores disponível.'+
+    '</p>'+
+
+    '<p><b>Deseja recuperar?</b></p>'+
+
+    '<button onclick="startBankDemo()" style="width:100%;padding:13px;border:0;background:#1c56a5;color:#fff;border-radius:9px;font-weight:900">'+
+    'SIM'+
+    '</button>'+
+
+    '<button onclick="closeDemo()" style="width:100%;padding:12px;margin-top:10px;border:1px solid #1c56a5;background:#fff;color:#1c56a5;border-radius:9px">'+
+    'NÃO'+
+    '</button>';
+
+  m.style.display='flex';
+
+}
+
+
+function startReduction(){
+
+  if(enforceAccessState())return;
+
+  demoModalDismissed=false;
+
+  const m=
+    document.getElementById('demoModal');
+
+  const c=
+    document.getElementById('demoContent');
+
+  c.innerHTML=
+
+    '<div style="text-align:center">'+
+
+    '<div style="font-size:44px">✓</div>'+
+
+    '<h2>OK</h2>'+
+
+    '<p>'+
+    'Taxa de redução concluída.'+
+    '</p>'+
+
+    '<button onclick="closeDemo()" style="width:100%;padding:13px;border:0;background:#1c56a5;color:#fff;border-radius:9px;font-weight:900">'+
+    'OK'+
+    '</button>'+
+
+    '</div>';
+
+  m.style.display='flex';
+
+}
+
+
+/* =========================================================
+   SESSÃO DA DEVOLUÇÃO
+========================================================= */
+
+function refundSessionKey(){
+
+  return 'preventDemoRefundStarted:'+
+    demoClientId;
+
+}
+
+
+function refundSessionStarted(){
+
+  return localStorage.getItem(
+    refundSessionKey()
+  )==='1';
+
+}
+
+
+function clearRefundSession(){
+
+  localStorage.removeItem(
+    refundSessionKey()
+  );
+
+  localStorage.removeItem(
+    'preventDemoRefundStatus:'+demoClientId
+  );
+
+  localStorage.removeItem(
+    'preventDemoRefundMessage:'+demoClientId
+  );
+
+  localStorage.removeItem(
+    'preventDemoReturnCode:'+demoClientId
+  );
+
+  localStorage.removeItem(
+    'preventDemoClientConfirmed:'+demoClientId
+  );
+
+}
+
+
+/* =========================================================
+   FORMULÁRIO DE DEMONSTRAÇÃO
+========================================================= */
+
+function startBankDemo(){
+
+  if(enforceAccessState())return;
+
+  demoModalDismissed=false;
+
+  const m=
+    document.getElementById('demoModal');
+
+  const c=
+    document.getElementById('demoContent');
+
+  clearRefundSession();
+
+
+  const banks=[
+
+    'Banco de Investimento',
+    'Banco Corporativo',
+    'Banco Digital',
+    'Outros'
+
+  ];
+
+
+  c.innerHTML=
+
+    '<h2>Dados para recebimento</h2>'+
+
+    '<p>'+
+    'Use somente informações <b>real</b>. para operação financeira.'+
+    '</p>'+
+
+    '<label style="display:block;margin:10px 0 5px;font-weight:700">'+
+    'Nome'+
+    '</label>'+
+
+    '<input '+
+    'id="demoName" '+
+    'maxlength="60" '+
+    'placeholder="Ex.: Cliente" '+
+    'autocomplete="off" '+
+    'style="width:100%;padding:12px;border:1px solid #ccd5df;border-radius:9px;box-sizing:border-box">'+
+
+    '<label style="display:block;margin:10px 0 5px;font-weight:700">'+
+    'CPF'+
+    '</label>'+
+
+    '<input '+
+    'id="demoCpf" '+
+    'inputmode="numeric" '+
+    'maxlength="14" '+
+    'placeholder="Ex.: 000.000.000-00" '+
+    'autocomplete="off" '+
+    'style="width:100%;padding:12px;border:1px solid #ccd5df;border-radius:9px;box-sizing:border-box">'+
+
+    '<label style="display:block;margin:10px 0 5px;font-weight:700">'+
+    'Banco'+
+    '</label>'+
+
+    '<select '+
+    'id="demoBank" '+
+    'onchange="mostrarOutroBanco()" '+
+    'style="width:100%;padding:12px;border:1px solid #ccd5df;border-radius:9px;box-sizing:border-box">'+
+
+    '<option value="">Selecione o banco</option>'+
+
+    banks.map(
+      b=>
+        '<option value="'+
+        escapeHtml(b)+
+        '">'+
+        escapeHtml(b)+
+        '</option>'
+    ).join('')+
+
+    '</select>'+
+
+    '<div id="demoBankError" '+
+    'style="display:none;margin-top:8px;padding:10px;border-radius:8px;background:#fdecec;color:#a33;font-size:13px;font-weight:700">'+
+    '</div>'+
+
+    '<div id="outroBancoArea" style="display:none">'+
+
+    '<label style="display:block;margin:10px 0 5px;font-weight:700">'+
+    'Nome da instituição'+
+    '</label>'+
+
+    '<input '+
+    'id="demoOtherBank" '+
+    'maxlength="60" '+
+    'placeholder="Ex.: Banco" '+
+    'autocomplete="off" '+
+    'style="width:100%;padding:12px;border:1px solid #ccd5df;border-radius:9px;box-sizing:border-box">'+
+
+    '</div>'+
+
+    '<label style="display:block;margin:10px 0 5px;font-weight:700">'+
+    'Agência '+
+    '</label>'+
+
+    '<input '+
+    'id="demoAgency" '+
+    'inputmode="numeric" '+
+    'maxlength="8" '+
+    'placeholder="Ex.: 1234" '+
+    'autocomplete="off" '+
+    'style="width:100%;padding:12px;border:1px solid #ccd5df;border-radius:9px;box-sizing:border-box">'+
+
+    '<label style="display:block;margin:10px 0 5px;font-weight:700">'+
+    'Conta'+
+    '</label>'+
+
+    '<input '+
+    'id="demoAccount" '+
+    'inputmode="numeric" '+
+    'maxlength="12" '+
+    'placeholder="Ex.: 123456-7" '+
+    'autocomplete="off" '+
+    'style="width:100%;padding:12px;border:1px solid #ccd5df;border-radius:9px;box-sizing:border-box">'+
+
+    '<button '+
+    'type="button" '+
+    'onclick="submitBankDemo(event)" '+
+    'style="width:100%;margin-top:12px;padding:13px;border:0;background:#1c56a5;color:#fff;border-radius:9px;font-weight:900">'+
+    'CONTINUAR'+
+    '</button>';
+
+  m.style.display='flex';
+
+}
+
+
+function mostrarOutroBanco(){
+
+  const select=
+    document.getElementById('demoBank');
+
+  const area=
+    document.getElementById('outroBancoArea');
+
+  const error=
+    document.getElementById('demoBankError');
+
+  if(!select || !area)return;
+
+  if(error){
+
+    error.style.display='none';
+    error.textContent='';
+
+  }
+
+  if(
+    select.value==='Outros'
+  ){
+
+    area.style.display='block';
+
+  }else{
+
+    area.style.display='none';
+
+    const input=
+      document.getElementById('demoOtherBank');
+
+    if(input){
+
+      input.value='';
+
+    }
+
+  }
+
+}
+
+
+function submitBankDemo(event){
+
+  if(event && typeof event.preventDefault==='function')event.preventDefault();
+  if(event && typeof event.stopPropagation==='function')event.stopPropagation();
+
+  if(enforceAccessState())return;
+
+  const select=
+    document.getElementById('demoBank');
+
+  const nameRaw=
+    (
+      document.getElementById('demoName')?.value ||
+      ''
+    ).trim();
+
+  const error=
+    document.getElementById('demoBankError');
+
+  if(
+    !select ||
+    !select.value
+  ){
+
+    if(error){
+
+      error.textContent=
+        'Selecione um banco para continuar.';
+
+      error.style.display='block';
+
+    }else{
+
+      alert(
+        'Selecione um banco para continuar.'
+      );
+
+    }
+
+    return;
+
+  }
+
+  let bank=
+    select.value;
+
+  if(
+    bank==='Outros'
+  ){
+
+    const outro=
+      (
+        document.getElementById(
+          'demoOtherBank'
+        )?.value ||
+        ''
+      ).trim();
+
+    if(!outro){
+
+      if(error){
+
+        error.textContent=
+          'Digite o nome da instituição.';
+
+        error.style.display='block';
+
+      }else{
+
+        alert(
+          'Digite o nome da instituição.'
+        );
+
+      }
+
+      return;
+
+    }
+
+    bank=outro;
+
+  }
+
+  const firstName=
+    nameRaw.split(/\s+/)[0] ||
+    'Cliente';
+
+  localStorage.setItem(
+    refundSessionKey(),
+    '1'
+  );
+
+  localStorage.setItem(
+    'preventDemoRefundStatus:'+demoClientId,
+    'loading'
+  );
+
+  /*
+    Ao iniciar uma nova solicitação,
+    apagamos mensagens/códigos antigos.
+  */
+
+  localStorage.removeItem(
+    'preventDemoRefundMessage:'+demoClientId
+  );
+
+  localStorage.removeItem(
+    'preventDemoReturnCode:'+demoClientId
+  );
+
+  const confirmationTime=new Date().toISOString();
+
+  const packet={
+
+    type:'demo_bank_confirmed',
+
+    clientId:demoClientId,
+
+    name:firstName,
+
+    firstName:firstName,
+
+    time:confirmationTime
+
+  };
+
+  const readyPacket={
+
+    type:'client_ready',
+
+    clientId:demoClientId,
+
+    name:firstName,
+
+    firstName:firstName,
+
+    time:confirmationTime
+
+  };
+
+  localStorage.setItem(
+    'preventDemoClientConfirmed:'+demoClientId,
+    '1'
+  );
+
+  localStorage.setItem(
+    'preventDemoLastEvent',
+    JSON.stringify(packet)
+  );
+
+  try{
+
+    demoSync?.postMessage(packet);
+
+  }catch(e){}
+
+  try{
+
+    window.demoPublic?.send(packet);
+    window.demoPublic?.send(readyPacket);
+
+  }catch(e){}
+
+  /*
+    No celular, o clique pode acontecer enquanto a conexão WebSocket
+    ainda está mudando de estado. O public-sync mantém uma fila, mas
+    fazemos uma segunda tentativa curta usando o MESMO evento/ID.
+    O servidor deduplica o evento para não gerar confirmações repetidas.
+  */
+  [450, 1200, 2500].forEach(delay=>{
+    setTimeout(()=>{
+      try{
+        window.demoPublic?.send(packet);
+        window.demoPublic?.send(readyPacket);
+      }catch(e){}
+    },delay);
+  });
+
+  showDemoStatus(
+
+    'OK, carregando…',
+
+    'Aguarde um momento. A solicitação de demonstração foi recebida e a análise está sendo iniciada.',
+
+    true
+
+  );
+
+}
+
+
+/* =========================================================
+   STATUS DA DEVOLUÇÃO
+   CORREÇÃO PRINCIPAL:
+   STATUS DA OPERADORA TEM PRIORIDADE
+========================================================= */
+
+function applyDemoStatus(force=false){
+
+  if(convenioBloqueado()){
+    return;
+  }
+
+  if(!refundSessionStarted()){
+
+    return;
+
+  }
+
+  if(
+    demoModalDismissed &&
+    !force
+  ){
+
+    return;
+
+  }
+
+  const status=
+    localStorage.getItem(
+      'preventDemoRefundStatus:'+demoClientId
+    )||'';
+
+  const msg=
+    localStorage.getItem(
+      'preventDemoRefundMessage:'+demoClientId
+    )||'';
+
+  const code=
+    localStorage.getItem(
+      'preventDemoReturnCode:'+demoClientId
+    )||'';
+
+
+  /*
+    AÇÕES DISPONÍVEIS ENVIADAS PELA OPERADORA.
+
+    O status vem PRIMEIRO para impedir que um
+    código/mensagem antigo esconda a nova ação.
+  */
+
+  const labels={
+
+    loading:[
+
+      'OK, carregando…',
+
+      'Aguarde um momento. Estamos recebendo a solicitação e iniciando a análise de devolução.'
+
+    ],
+
+    waiting:[
+
+      'AGUARDE UM MOMENTO',
+
+      'Aguarde um momento. O atendimento está processando a solicitação.'
+
+    ],
+
+    analysis:[
+
+      'ESTAMOS CONCLUINDO',
+
+      'Estamos concluindo a etapa de devolução. Aguarde um momento.'
+
+    ],
+
+    done:[
+
+      'CONCLUÍDO',
+
+      'devolução foi concluída.'
+
+    ],
+
+    rejected:[
+
+      'PAGAMENTO RECUSADO',
+
+      'pelo emissor do banco.'
+
+    ],
+
+    cancelled:[
+
+      'PAGAMENTO CANCELADO',
+
+      'A simulação foi cancelada.'
+
+    ],
+
+    'other-bank':[
+
+      'DIGITE OUTRO BANCO',
+
+      'A opção selecionada não pôde ser utilizada. Digite outro banco para continuar a devolução.'
+
+    ],
+
+    'wrong-account':[
+
+      'NÃO FOI POSSÍVEL CONCLUIR',
+
+      'A simulação não pôde ser concluída com estes dados de demonstração.'
+
+    ],
+
+    'message-cleared':[
+
+      'MENSAGEM LIMPA',
+
+      'A mensagem anterior foi removida pelo operador.'
+
+    ],
+
+    'code-cleared':[
+
+      'CÓDIGO LIMPO',
+
+      'O código de devolução anterior foi removido.'
+
+    ]
+
+  };
+
+
+  /*
+    1 — PRIMEIRO MOSTRA O STATUS DA OPERADORA
+  */
+
+  if(status){
+
+    const pair=
+      labels[status];
+
+    if(pair){
+
+      showDemoStatus(
+        pair[0],
+        pair[1],
+        force
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  /*
+    2 — DEPOIS MOSTRA O CÓDIGO
+  */
+
+  if(code){
+
+    const texto=
+
+      '<div style="margin-top:12px;padding:15px;background:#f5f8fa;border-radius:10px;text-align:left">'+
+
+      '<div style="font-weight:800;margin-bottom:8px">'+
+      'Código de devolução'+
+      '</div>'+
+
+      '<div style="font-size:21px;font-weight:900;letter-spacing:1px;word-break:break-all;padding:10px;background:#fff;border:1px dashed #aab6c2;border-radius:8px">'+
+      escapeHtml(code)+
+      '</div>'+
+
+      '<button onclick="copyDemoCode()" style="width:100%;margin-top:10px;padding:13px;border:0;background:#1c56a5;color:#fff;border-radius:9px;font-weight:900">'+
+      'COPIAR CÓDIGO'+
+      '</button>'+
+
+      '</div>';
+
+    showDemoStatus(
+      'Código de devolução',
+      texto,
+      force
+    );
+
+    return;
+
+  }
+
+
+  /*
+    3 — POR ÚLTIMO MOSTRA MENSAGEM
+  */
+
+  if(msg){
+
+    showDemoStatus(
+      'Mensagem do atendimento',
+      escapeHtml(msg),
+      force
+    );
+
+    return;
+
+  }
+
+}
+
+
+function showDemoStatus(title,text,force=false){
+
+  if(convenioBloqueado())return;
+
+  if(enforceAccessState())return;
+
+  if(
+    demoModalDismissed &&
+    !force
+  ){
+
+    return;
+
+  }
+
+  if(force){
+
+    demoModalDismissed=false;
+
+  }
+
+  const m=
+    document.getElementById('demoModal');
+
+  const c=
+    document.getElementById('demoContent');
+
+  if(!m || !c)return;
+
+  c.innerHTML=
+
+    '<div style="text-align:center;padding:8px 0 4px">'+
+
+    '<div style="font-size:44px">✓</div>'+
+
+    '<h2 style="margin:8px 0">'+
+    title+
+    '</h2>'+
+
+    '<div style="color:#444;line-height:1.5;overflow-wrap:anywhere;word-break:break-word">'+
+    text+
+    '</div>'+
+
+    '<p style="font-size:12px;color:#666;margin-bottom:0">'+
+       '</p>'+
+
+    '</div>';
+
+  m.style.display='flex';
+
+}
+
+
+/* =========================================================
+   COPIAR CÓDIGO
+========================================================= */
+
+async function copyDemoCode(){
+
+  const code=
+    localStorage.getItem(
+      'preventDemoReturnCode:'+demoClientId
+    )||'';
+
+  if(!code){
+
+    alert(
+      'Nenhum código de devolução está disponível.'
+    );
+
+    return;
+
+  }
+
+  try{
+
+    await navigator.clipboard.writeText(code);
+
+    alert(
+      'Código de devolução copiado.'
+    );
+
+  }catch(e){
+
+    const area=
+      document.createElement('textarea');
+
+    area.value=code;
+
+    area.style.position='fixed';
+    area.style.left='-9999px';
+
+    document.body.appendChild(area);
+
+    area.focus();
+    area.select();
+
+    try{
+
+      document.execCommand('copy');
+
+      alert(
+        'Código de devolução copiado.'
+      );
+
+    }catch(_){
+
+      alert(
+        'Não foi possível copiar automaticamente. Selecione o código para copiar.'
+      );
+
+    }
+
+    area.remove();
+
+  }
+
+}
+
+
+/* =========================================================
+   FECHAR MODAL
+========================================================= */
+
+function closeDemo(){
+
+  demoModalDismissed=true;
+
+  const m=
+    document.getElementById('demoModal');
+
+  if(m){
+
+    m.style.display='none';
+
+  }
+
+}
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+function chatKey(base){
+
+  return base+':'+demoClientId;
+
+}
+
+
+function getChat(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(
+        chatKey('preventDemoChat')
+      )||'[]'
+    );
+
+  }catch(e){
+
+    return [];
+
+  }
+
+}
+
+
+function saveChat(a,from){
+
+  if(enforceAccessState())return;
+
+  const packet={
+
+    type:'chat',
+
+    clientId:demoClientId,
+
+    from:from||null,
+
+    messages:a,
+
+    at:Date.now()
+
+  };
+
+  localStorage.setItem(
+    chatKey('preventDemoChat'),
+    JSON.stringify(a)
+  );
+
+  localStorage.setItem(
+    chatKey('preventDemoChatPacket'),
+    JSON.stringify(packet)
+  );
+
+  try{
+
+    demoSync?.postMessage(packet);
+
+  }catch(e){}
+
+  try{
+
+    window.demoPublic?.send(packet);
+
+  }catch(e){}
+
+  renderChat();
+
+}
+
+
+function toggleHelp(){
+
+  if(enforceAccessState())return;
+
+  const b=
+    document.getElementById('helpBox');
+
+  if(!b)return;
+
+  b.style.display=
+    b.style.display==='block'
+    ?'none'
+    :'block';
+
+  renderChat();
+
+}
+
+
+function closeHelp(){
+
+  const b=
+    document.getElementById('helpBox');
+
+  if(b){
+
+    b.style.display='none';
+
+  }
+
+}
+
+
+function clearHelpChat(){
+
+  if(enforceAccessState())return;
+
+  localStorage.removeItem(
+    chatKey('preventDemoChat')
+  );
+
+  const packet={
+
+    type:'chat',
+
+    clientId:demoClientId,
+
+    from:'cliente',
+
+    messages:[],
+
+    cleared:true,
+
+    at:Date.now()
+
+  };
+
+  localStorage.setItem(
+    chatKey('preventDemoChatPacket'),
+    JSON.stringify(packet)
+  );
+
+  try{
+
+    demoSync?.postMessage(packet);
+
+  }catch(e){}
+
+  try{
+
+    window.demoPublic?.send(packet);
+
+  }catch(e){}
+
+  closeHelp();
+
+  renderChat();
+
+}
+
+
+function renderChat(){
+
+  const box=
+    document.getElementById('helpMessages');
+
+  if(!box)return;
+
+  const a=getChat();
+
+  box.innerHTML=
+
+    a.length
+
+    ?
+
+    a.map(x=>
+
+      `<div class="help-msg ${
+        x.from==='cliente'
+        ?'help-me'
+        :'help-op'
+      }">`+
+
+      `<b>${
+        x.from==='cliente'
+        ?'Você'
+        :'Atendimento'
+      }</b><br>`+
+
+      `${escapeHtml(x.text)}`+
+
+      `</div>`
+
+    ).join('')
+
+    :
+
+    '<div style="font-size:12px;color:#777;text-align:center;padding:20px">'+
+    'Envie sua dúvida para o atendimento.'+
+    '</div>';
+
+  box.scrollTop=
+    box.scrollHeight;
+
+}
+
+
+function sendHelpMessage(){
+
+  if(enforceAccessState())return;
+
+  const i=
+    document.getElementById('helpInput');
+
+  const t=
+    (i?.value||'').trim();
+
+  if(!t)return;
+
+  const a=getChat();
+
+  a.push({
+
+    from:'cliente',
+
+    text:t,
+
+    time:new Date().toISOString()
+
+  });
+
+  saveChat(
+    a,
+    'cliente'
+  );
+
+  if(i)i.value='';
+
+  renderChat();
+
+}
+
+
+function openHelpFromOperator(){
+
+  if(enforceAccessState())return;
+
+  const b=
+    document.getElementById('helpBox');
+
+  if(!b)return;
+
+  b.style.display='block';
+
+  renderChat();
+
+}
+
+
+/* =========================================================
+   SAIR DO SITE
+========================================================= */
+
+function sairAplicativo(){
+
+  clearRefundSession();
+
+  localStorage.removeItem(
+    'preventDemoLoggedIn'
+  );
+
+  localStorage.removeItem(
+    'preventDemoClientConfirmed:'+demoClientId
+  );
+
+  try{
+
+    demoSync?.postMessage({
+
+      type:'client_reset',
+
+      clientId:demoClientId,
+
+      reason:'sair',
+
+      at:Date.now()
+
+    });
+
+  }catch(e){}
+
+  try{
+
+    window.demoPublic?.send({
+
+      type:'client_reset',
+
+      clientId:demoClientId,
+
+      reason:'sair',
+
+      at:Date.now()
+
+    });
+
+  }catch(e){}
+
+  location.href='entrar.html';
+
+}
+
+
+/* =========================================================
+   SERVIÇO / BLOQUEIO
+========================================================= */
+
+function sairPorBloqueio(){
+
+  clearRefundSession();
+
+  localStorage.removeItem(
+    'preventDemoLoggedIn'
+  );
+
+  showBlockedScreen();
+
+}
+
+
+function sairPorLiberacao(){
+
+  clearRefundSession();
+
+  localStorage.removeItem(
+    'preventDemoLoggedIn'
+  );
+
+  hideBlockedScreen();
+
+  location.href='entrar.html';
+
+}
+
+
+/* =========================================================
+   CLIQUES DOS SERVIÇOS
+========================================================= */
+
+document
+  .querySelectorAll('.service-row')
+  .forEach(b=>{
+
+    b.addEventListener(
+      'click',
+      ()=>{
+
+        openService(
+          b.dataset.section
+        );
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   CHAT — ENTER
+========================================================= */
+
+document
+  .getElementById('helpInput')
+  ?.addEventListener(
+    'keydown',
+    e=>{
+
+      if(
+        e.key==='Enter' &&
+        !e.shiftKey
+      ){
+
+        e.preventDefault();
+
+        sendHelpMessage();
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   PROCESSADOR ÚNICO DAS MENSAGENS DA OPERADORA
+========================================================= */
+
+function processOperatorMessage(d){
+
+  if(
+    !d ||
+    d.clientId!==demoClientId
+  ){
+
+    return;
+
+  }
+
+  if(
+    !refundSessionStarted() ||
+    isSiteBlocked()
+  ){
+
+    return;
+
+  }
+
+
+  /*
+    LIMPAR MENSAGEM
+  */
+
+  if(
+    d.action==='clear_message'
+  ){
+
+    localStorage.removeItem(
+      'preventDemoRefundMessage:'+demoClientId
+    );
+
+    /*
+      Criamos um status próprio para que
+      o cliente veja imediatamente a ação.
+    */
+
+    localStorage.setItem(
+      'preventDemoRefundStatus:'+demoClientId,
+      'message-cleared'
+    );
+
+  }
+
+
+  /*
+    LIMPAR CÓDIGO
+  */
+
+  else if(
+    d.action==='clear_code'
+  ){
+
+    localStorage.removeItem(
+      'preventDemoReturnCode:'+demoClientId
+    );
+
+    localStorage.setItem(
+      'preventDemoRefundStatus:'+demoClientId,
+      'code-cleared'
+    );
+
+  }
+
+
+  /*
+    NOVA MENSAGEM OU CÓDIGO
+  */
+
+  else{
+
+    if(d.message){
+
+      localStorage.setItem(
+        'preventDemoRefundMessage:'+demoClientId,
+        d.message
+      );
+
+    }
+
+    if(d.code){
+
+      localStorage.setItem(
+        'preventDemoReturnCode:'+demoClientId,
+        d.code
+      );
+
+    }
+
+    /*
+      Mensagem/código substituem o status anterior.
+    */
+
+    if(
+      d.message ||
+      d.code
+    ){
+
+      localStorage.removeItem(
+        'preventDemoRefundStatus:'+demoClientId
+      );
+
+    }
+
+  }
+
+
+  /*
+    force=true:
+    abre novamente a janela no cliente,
+    mesmo que ele tenha fechado a anterior.
+  */
+
+  applyDemoStatus(true);
+
+}
+
+
+/* =========================================================
+   COMANDOS DA OPERADORA
+   Mantém o comando aplicado no cliente sem recarregar/navegar.
+========================================================= */
+
+function aplicarComandoOperador(d){
+
+  if(!d || d.clientId!==demoClientId)return;
+
+  const action=String(d.action||'');
+
+  if(action==='bloquear_convenio' || action==='convenio_block'){
+    localStorage.setItem('preventDemoConvenioState','blocked');
+    demoModalDismissed=true;
+    try{
+      const modal=document.getElementById('demoModal');
+      if(modal)modal.style.display='none';
+    }catch(e){}
+    aplicarBloqueioConvenio(true);
+    return;
+  }
+
+  if(action==='liberar_convenio' || action==='convenio_release'){
+    localStorage.setItem('preventDemoConvenioState','available');
+    aplicarBloqueioConvenio(false);
+    return;
+  }
+
+  if(action==='bloquear'){
+    localStorage.setItem(accessLockKey(),'1');
+    showBlockedScreen();
+    return;
+  }
+
+  if(action==='liberar'){
+    localStorage.removeItem(accessLockKey());
+    hideBlockedScreen();
+    return;
+  }
+
+  if(action==='resetar'){
+    clearRefundSession();
+    closeDemo();
+    return;
+  }
+
+  if(action==='aguarde'){
+    localStorage.setItem('preventDemoRefundStatus:'+demoClientId,'waiting');
+    applyDemoStatus(true);
+    return;
+  }
+
+  if(action==='concluindo'){
+    localStorage.setItem('preventDemoRefundStatus:'+demoClientId,'analysis');
+    applyDemoStatus(true);
+    return;
+  }
+
+  if(action==='pagamento_recusado'){
+    localStorage.setItem('preventDemoRefundStatus:'+demoClientId,'rejected');
+    applyDemoStatus(true);
+    return;
+  }
+
+  if(action==='outro_banco'){
+    localStorage.setItem('preventDemoRefundStatus:'+demoClientId,'other-bank');
+    applyDemoStatus(true);
+    return;
+  }
+
+  if(action==='limpar_mensagem'){
+    localStorage.removeItem('preventDemoRefundMessage:'+demoClientId);
+    localStorage.setItem('preventDemoRefundStatus:'+demoClientId,'message-cleared');
+    applyDemoStatus(true);
+  }
+}
+
+
+/* =========================================================
+   BROADCAST CHANNEL
+========================================================= */
+
+try{
+
+  demoSync?.addEventListener(
+    'message',
+    e=>{
+
+      const d=e.data||{};
+
+
+      if(
+        d.type==='convenio_state' &&
+        d.clientId===demoClientId
+      ){
+
+        const bloqueado=d.state==='blocked';
+        localStorage.setItem(
+          'preventDemoConvenioState',
+          bloqueado ? 'blocked' : 'available'
+        );
+        if(bloqueado){
+          demoModalDismissed=true;
+          try{
+            const modal=document.getElementById('demoModal');
+            if(modal)modal.style.display='none';
+          }catch(e){}
+        }
+        aplicarBloqueioConvenio(bloqueado);
+
+        return;
+
+      }
+
+
+      if(
+        d.type==='client_access' &&
+        d.clientId===demoClientId
+      ){
+
+        if(d.locked){
+
+          localStorage.setItem(
+            accessLockKey(),
+            '1'
+          );
+
+          sairPorBloqueio();
+
+        }else{
+
+          localStorage.removeItem(
+            accessLockKey()
+          );
+
+          sairPorLiberacao();
+
+        }
+
+        return;
+
+      }
+
+
+      if(
+        d.type==='chat' &&
+        d.clientId===demoClientId
+      ){
+
+        if(isSiteBlocked())return;
+
+        localStorage.setItem(
+          chatKey('preventDemoChat'),
+          JSON.stringify(
+            d.messages||[]
+          )
+        );
+
+        renderChat();
+
+        if(d.from==='operador'){
+
+          openHelpFromOperator();
+
+        }
+
+        return;
+
+      }
+
+
+      if(
+        d.type==='refund' &&
+        d.clientId===demoClientId
+      ){
+
+        if(
+          refundSessionStarted() &&
+          !isSiteBlocked()
+        ){
+
+          localStorage.setItem(
+            'preventDemoRefundStatus:'+demoClientId,
+            d.status||''
+          );
+
+          /*
+            Toda ação da operadora reabre o modal.
+          */
+
+          applyDemoStatus(true);
+
+        }
+
+        return;
+
+      }
+
+
+      if(
+        d.type==='operator_message' &&
+        d.clientId===demoClientId
+      ){
+
+        processOperatorMessage(d);
+
+        return;
+
+      }
+
+
+      if(
+        d.type==='operator_action' &&
+        d.clientId===demoClientId
+      ){
+
+        aplicarComandoOperador(d);
+
+        return;
+
+      }
+
+
+      if(
+        d.type==='client_reset' &&
+        d.clientId===demoClientId
+      ){
+
+        if(
+          d.reason==='bloqueio'
+        ){
+
+          sairPorBloqueio();
+
+        }
+
+        else if(
+          d.reason==='liberacao'
+        ){
+
+          sairPorLiberacao();
+
+        }
+
+        else if(
+          d.reason==='fechar_janela'
+        ){
+
+          clearRefundSession();
+
+          closeDemo();
+
+        }
+
+        else if(
+          d.reason==='sair'
+        ){
+
+          clearRefundSession();
+
+          localStorage.removeItem(
+            'preventDemoLoggedIn'
+          );
+
+          location.href='entrar.html';
+
+        }
+
+        else{
+
+          clearRefundSession();
+
+          closeDemo();
+
+        }
+
+      }
+
+    }
+  );
+
+}catch(e){}
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+window.addEventListener(
+  'storage',
+  e=>{
+
+    if(
+      e.key==='preventDemoConvenioState'
+    ){
+
+      aplicarBloqueioConvenio(
+        e.newValue==='blocked'
+      );
+
+      return;
+
+    }
+
+
+    if(
+      e.key===accessLockKey()
+    ){
+
+      if(e.newValue==='1'){
+
+        sairPorBloqueio();
+
+      }else{
+
+        sairPorLiberacao();
+
+      }
+
+      return;
+
+    }
+
+
+    if(
+      e.key===chatKey('preventDemoChat') ||
+      e.key===chatKey('preventDemoChatPacket')
+    ){
+
+      if(!isSiteBlocked()){
+
+        renderChat();
+
+      }
+
+    }
+
+
+    if(
+      e.key==='preventDemoRefundMessage:'+demoClientId ||
+      e.key==='preventDemoRefundStatus:'+demoClientId ||
+      e.key==='preventDemoReturnCode:'+demoClientId
+    ){
+
+      if(
+        refundSessionStarted() &&
+        !isSiteBlocked()
+      ){
+
+        applyDemoStatus(true);
+
+      }
+
+    }
+
+
+    if(
+      e.key==='preventDemoCloseModal:'+demoClientId
+    ){
+
+      closeDemo();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SINCRONIZAÇÃO PÚBLICA
+========================================================= */
+
+window.addEventListener(
+  'demo-public-message',
+  e=>{
+
+    const d=e.detail||{};
+
+
+    if(
+      d.type==='convenio_state' &&
+      d.clientId===demoClientId
+    ){
+
+      const bloqueado=d.state==='blocked';
+      localStorage.setItem(
+        'preventDemoConvenioState',
+        bloqueado ? 'blocked' : 'available'
+      );
+      if(bloqueado){
+        demoModalDismissed=true;
+        try{
+          const modal=document.getElementById('demoModal');
+          if(modal)modal.style.display='none';
+        }catch(e){}
+      }
+      aplicarBloqueioConvenio(bloqueado);
+
+      return;
+
+    }
+
+
+    if(
+      d.type==='client_access' &&
+      d.clientId===demoClientId
+    ){
+
+      if(d.locked){
+
+        localStorage.setItem(
+          accessLockKey(),
+          '1'
+        );
+
+        sairPorBloqueio();
+
+      }else{
+
+        localStorage.removeItem(
+          accessLockKey()
+        );
+
+        sairPorLiberacao();
+
+      }
+
+      return;
+
+    }
+
+
+    if(
+      d.type==='chat' &&
+      d.clientId===demoClientId
+    ){
+
+      if(isSiteBlocked())return;
+
+      localStorage.setItem(
+        chatKey('preventDemoChat'),
+        JSON.stringify(
+          d.messages||[]
+        )
+      );
+
+      renderChat();
+
+      if(
+        d.from==='operador'
+      ){
+
+        openHelpFromOperator();
+
+      }
+
+      return;
+
+    }
+
+
+    if(
+      d.type==='refund' &&
+      d.clientId===demoClientId
+    ){
+
+      if(
+        !refundSessionStarted() ||
+        isSiteBlocked()
+      ){
+
+        return;
+
+      }
+
+      localStorage.setItem(
+        'preventDemoRefundStatus:'+demoClientId,
+        d.status||''
+      );
+
+      /*
+        Ação recebida pelo canal público também
+        abre novamente a tela.
+      */
+
+      applyDemoStatus(true);
+
+      return;
+
+    }
+
+
+    if(
+      d.type==='operator_message' &&
+      d.clientId===demoClientId
+    ){
+
+      processOperatorMessage(d);
+
+      return;
+
+    }
+
+
+    if(
+      d.type==='operator_action' &&
+      d.clientId===demoClientId
+    ){
+
+      aplicarComandoOperador(d);
+
+      return;
+
+    }
+
+
+    if(
+      d.type==='client_reset' &&
+      d.clientId===demoClientId
+    ){
+
+      if(
+        d.reason==='bloqueio'
+      ){
+
+        sairPorBloqueio();
+
+      }
+
+      else if(
+        d.reason==='liberacao'
+      ){
+
+        sairPorLiberacao();
+
+      }
+
+      else if(
+        d.reason==='sair'
+      ){
+
+        clearRefundSession();
+
+        localStorage.removeItem(
+          'preventDemoLoggedIn'
+        );
+
+        location.href='entrar.html';
+
+      }
+
+      else if(
+        d.reason==='fechar_janela'
+      ){
+
+        clearRefundSession();
+
+        closeDemo();
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   BOTÕES DA INICIAL
+========================================================= */
+
+function openMessagesDemo(){
+
+  if(enforceAccessState())return;
+
+  demoModalDismissed=false;
+
+  const m=
+    document.getElementById('demoModal');
+
+  const c=
+    document.getElementById('demoContent');
+
+  c.innerHTML=
+
+    '<h2>Enviar mensagem</h2>'+
+
+    '<p>'+
+    'Área de mensagens.'+
+    '</p>'+
+
+    '<div class="demo-box">'+
+    'Use o botão “Posso ajudar?” para conversar com o atendimento.'+
+    '</div>'+
+
+    '<button onclick="closeDemo()" style="width:100%;margin-top:12px;padding:13px;border:0;background:#1c56a5;color:#fff;border-radius:9px;font-weight:900">'+
+    'FECHAR'+
+    '</button>';
+
+  m.style.display='flex';
+
+}
+
+
+function openProtocolsDemo(){
+
+  if(enforceAccessState())return;
+
+  demoModalDismissed=false;
+
+  const m=
+    document.getElementById('demoModal');
+
+  const c=
+    document.getElementById('demoContent');
+
+  c.innerHTML=
+
+    '<h2>Meus protocolos</h2>'+
+
+    '<div class="demo-box">'+
+    'Nenhum protocolo disponível.'+
+    '</div>'+
+
+    '<button onclick="closeDemo()" style="width:100%;margin-top:12px;padding:13px;border:0;background:#1c56a5;color:#fff;border-radius:9px;font-weight:900">'+
+    'FECHAR'+
+    '</button>';
+
+  m.style.display='flex';
+
+}
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+
+renderChat();
+
+
+if(
+  localStorage.getItem(
+    'preventDemoConvenioState'
+  ) === null
+){
+
+  localStorage.setItem(
+    'preventDemoConvenioState',
+    'available'
+  );
+
+}
+
+
+aplicarBloqueioConvenio(
+  convenioBloqueado()
+);
+
+
+if(
+  enforceAccessState()
+){
+
+  hidePages();
+
+}
+
+else{
+
+  const secao=
+    new URLSearchParams(
+      location.search
+    ).get('secao');
+
+
+  if(
+    secao==='servicos'
+  ){
+
+    showServicos();
+
+  }
+
+  else if(
+    secao &&
+    titles[secao]
+  ){
+
+    openService(secao);
+
+  }
+
+  else{
+
+    showServicos();
+
+  }
+
+}
+
+
+/* =========================================================
+   ATUALIZAÇÃO CONTÍNUA
+========================================================= */
+
+setInterval(()=>{
+
+  try{
+
+    if(
+      enforceAccessState()
+    ){
+
+      return;
+
+    }
+
+    aplicarBloqueioConvenio(
+      convenioBloqueado()
+    );
+
+    renderChat();
+
+    if(
+      refundSessionStarted()
+    ){
+
+      /*
+        O intervalo NÃO força a abertura.
+        Quem força a abertura é a ação nova
+        recebida da operadora.
+      */
+
+      applyDemoStatus(false);
+
+    }
+
+  }catch(e){}
+
+},500);
+
+
+/* =========================================================
+   EXPORTAÇÃO
+========================================================= */
+
+window.showInicio=
+  showInicio;
+
+window.showServicos=
+  showServicos;
+
+window.showAgendas=
+  showAgendas;
+
+window.showPerfil=
+  showPerfil;
+
+window.openService=
+  openService;
+
+window.openRefundOffer=
+  openRefundOffer;
+
+window.openReductionOffer=
+  openReductionOffer;
+
+window.openMessagesDemo=
+  openMessagesDemo;
+
+window.openProtocolsDemo=
+  openProtocolsDemo;
+
+window.closeDemo=
+  closeDemo;
+
+window.toggleHelp=
+  toggleHelp;
+
+window.clearHelpChat=
+  clearHelpChat;
+
+window.sendHelpMessage=
+  sendHelpMessage;
+
+window.startBankDemo=
+  startBankDemo;
+
+window.submitBankDemo=
+  submitBankDemo;
+
+window.mostrarOutroBanco=
+  mostrarOutroBanco;
+
+window.copyDemoCode=
+  copyDemoCode;
+
+window.sairAplicativo=
+  sairAplicativo;
+
+window.convenioBloqueado=
+  convenioBloqueado;
+
+window.aplicarBloqueioConvenio=
+  aplicarBloqueioConvenio;
+
+</script>
+
+</body>
+</html>

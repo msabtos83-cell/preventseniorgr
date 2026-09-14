@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Entrar — Prevent Senior</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+<main class="login">
+
+  <div class="logo">
+    PREVENT <span>SENIOR</span><b>✓</b>
+  </div>
+
+  <h1>Entrar</h1>
+
+  <p class="subtitle">
+    Acesse sua área de atendimento
+  </p>
+
+  <label for="cpf">
+    CPF ou matrícula
+  </label>
+
+  <input
+    id="cpf"
+    type="text"
+    placeholder="Digite seu CPF ou matrícula"
+    inputmode="numeric"
+    autocomplete="off"
+  >
+
+  <label for="senha">
+    Senha
+  </label>
+
+  <input
+    id="senha"
+    type="password"
+    placeholder="Digite sua senha"
+    autocomplete="current-password"
+  >
+
+  <label class="check">
+    <input id="mostrar" type="checkbox">
+    Mostrar senha
+  </label>
+
+  <div id="msg" class="msg" hidden></div>
+
+  <button class="enter" id="entrarBtn">
+    ENTRAR
+  </button>
+
+  <button class="back" onclick="location.href='index.html'">
+    VOLTAR
+  </button>
+
+</main>
+
+<script>
+
+const cpf = document.getElementById('cpf');
+const senha = document.getElementById('senha');
+const msg = document.getElementById('msg');
+
+
+/* =========================================================
+   MENSAGEM
+========================================================= */
+
+function mostrarMensagem(texto){
+
+  msg.hidden = false;
+  msg.textContent = texto;
+
+}
+
+
+/* =========================================================
+   VERIFICAÇÃO DO ACESSO
+========================================================= */
+
+function acessoBloqueado(){
+
+  return localStorage.getItem(
+    'preventDemoAccessState'
+  ) === 'locked';
+
+}
+
+
+/* =========================================================
+   SE O OPERADOR BLOQUEOU O SITE
+========================================================= */
+
+if(acessoBloqueado()){
+
+  mostrarMensagem(
+    'Acesso indisponível no momento. Aguarde a liberação do operador.'
+  );
+
+}
+
+
+/* =========================================================
+   MOSTRAR / OCULTAR SENHA
+========================================================= */
+
+document.getElementById('mostrar').onchange = e => {
+
+  senha.type =
+    e.target.checked
+      ? 'text'
+      : 'password';
+
+};
+
+
+/* =========================================================
+   ENTRADA NA ÁREA
+========================================================= */
+
+document.getElementById('entrarBtn').onclick = () => {
+
+
+  /* -----------------------------------------------
+     PRIMEIRO: VERIFICA SE O SITE ESTÁ BLOQUEADO
+  ------------------------------------------------ */
+
+  if(acessoBloqueado()){
+
+    mostrarMensagem(
+      'Acesso indisponível no momento. Aguarde a liberação do operador.'
+    );
+
+    return;
+
+  }
+
+
+  /* -----------------------------------------------
+     VALIDAÇÃO
+  ------------------------------------------------ */
+
+  if(!cpf.value.trim() || !senha.value){
+
+    mostrarMensagem(
+      'Preencha CPF/matrícula e senha.'
+    );
+
+    return;
+
+  }
+
+
+  /*
+    NOVA SESSÃO DO PROTÓTIPO
+
+    Todos os estados anteriores são apagados
+    para que o novo acesso comece limpo.
+  */
+
+  const clientId =
+    'cliente-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
+
+
+  /* -----------------------------------------------
+     LIMPA ESTADOS ANTIGOS
+  ------------------------------------------------ */
+
+  localStorage.removeItem(
+    'preventDemoRefundStarted:' + clientId
+  );
+
+  localStorage.removeItem(
+    'preventDemoRefundStatus:' + clientId
+  );
+
+  localStorage.removeItem(
+    'preventDemoRefundMessage:' + clientId
+  );
+
+  localStorage.removeItem(
+    'preventDemoReturnCode:' + clientId
+  );
+
+  localStorage.removeItem(
+    'preventDemoClientConfirmed:' + clientId
+  );
+
+  localStorage.removeItem(
+    'preventDemoCloseModal:' + clientId
+  );
+
+
+  /* -----------------------------------------------
+     MARCA CLIENTE COMO LOGADO
+  ------------------------------------------------ */
+
+  localStorage.setItem(
+    'preventDemoLoggedIn',
+    '1'
+  );
+
+  localStorage.setItem(
+    'preventDemoName',
+    'Cliente'
+  );
+
+  try{
+    sessionStorage.setItem(
+      'preventDemoClientId',
+      clientId
+    );
+  }catch(e){}
+
+
+  /* -----------------------------------------------
+     REGISTRO DE ACESSO DEMO
+
+     A senha NÃO é armazenada.
+
+     O CPF fica somente mascarado no registro.
+  ------------------------------------------------ */
+
+  const raw =
+    (cpf.value || '').replace(/\D/g,'');
+
+
+  let events = [];
+
+  try{
+
+    events = JSON.parse(
+      localStorage.getItem(
+        'AX_OPERATOR_EVENTS'
+      ) || '[]'
+    );
+
+  }catch(e){
+
+    events = [];
+
+  }
+
+
+  events.push({
+
+    type:'demo_access',
+
+    evento:'Entrada na área',
+
+    clientId:clientId,
+
+    nome:'Cliente',
+
+    cpf:
+      raw.length >= 11
+        ? `***.***.***-${raw.slice(-2)}`
+        : '***.***.***-**',
+
+    senhaInformada:true,
+
+    time:new Date().toISOString(),
+
+    status:'ACESSO DEMO'
+
+  });
+
+
+  localStorage.setItem(
+    'AX_OPERATOR_EVENTS',
+    JSON.stringify(events)
+  );
+
+
+  /* -----------------------------------------------
+     ENTRA DIRETAMENTE EM SERVIÇOS
+  ------------------------------------------------ */
+
+  location.href =
+    'area.html?cliente=' +
+    encodeURIComponent(clientId) +
+    '&secao=servicos';
+
+};
+
+
+/* =========================================================
+   SE O OPERADOR LIBERAR ENQUANTO A PÁGINA ESTIVER ABERTA
+========================================================= */
+
+window.addEventListener('storage', event => {
+
+  if(event.key !== 'preventDemoAccessState') {
+    return;
+  }
+
+
+  if(event.newValue === 'locked'){
+
+    mostrarMensagem(
+      'Acesso indisponível no momento. Aguarde a liberação do operador.'
+    );
+
+    return;
+
+  }
+
+
+  if(event.newValue === 'available'){
+
+    msg.hidden = true;
+    msg.textContent = '';
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
